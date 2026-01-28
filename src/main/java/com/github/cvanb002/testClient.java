@@ -26,7 +26,7 @@ public class testClient {
                 System.out.println("Echo: " + in.readLine());
             }
         } catch (IOException e){
-            e.printStackTrace();
+            return;
         }
 
     }
