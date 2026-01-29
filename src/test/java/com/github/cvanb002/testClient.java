@@ -23,6 +23,23 @@ public class testClient {
                         new InputStreamReader(System.in));
         ) {
             String userInput;
+
+            new Thread(new Runnable() {
+                @Override
+                public void run(){
+                String response;
+                    try {
+                        while(true) {
+                            if ((response = in.readLine()) != null) {
+                                System.out.println(response);
+                            }
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }).start();
+
             while ((userInput = stdIn.readLine()) != null){
                 out.println(name + ": " + userInput);
                 //System.out.println(in.readLine());
