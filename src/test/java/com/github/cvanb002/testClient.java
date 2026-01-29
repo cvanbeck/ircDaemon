@@ -24,8 +24,8 @@ public class testClient {
         ) {
             String userInput;
             while ((userInput = stdIn.readLine()) != null){
-                out.println(name + ": " +userInput);
-//                System.out.println(in.readLine());
+                out.println(name + ": " + userInput);
+                //System.out.println(in.readLine());
             }
         } catch (IOException e){
             return;
