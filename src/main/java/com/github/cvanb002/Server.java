@@ -7,8 +7,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Server {
     public static void main(String[] args) throws IOException {
-        MessageCentre messages = new MessageCentre();
         CopyOnWriteArrayList<ClientHandler> clients = new CopyOnWriteArrayList<>();
+        MessageCentre messages = new MessageCentre(clients);
 
         int port = 6665; // ports 6665-6669 are often reserved for IRC
 
