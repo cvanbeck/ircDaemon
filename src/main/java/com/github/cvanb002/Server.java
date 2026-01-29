@@ -2,12 +2,14 @@ package com.github.cvanb002;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class Server {
     public static void main(String[] args) throws IOException {
-        CopyOnWriteArrayList<ClientHandler> clients = new CopyOnWriteArrayList<>();
+        List<ClientHandler> clients = Collections.synchronizedList(new ArrayList<>());
         MessageCentre messages = new MessageCentre(clients);
 
         int port = 6665; // ports 6665-6669 are often reserved for IRC
@@ -15,8 +17,9 @@ public class Server {
         try(ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName(null));){
             while(true){
                 ClientHandler client = new ClientHandler(serverSocket.accept(), messages);
-                client.start();
                 clients.add(client);
+                client.start();
+                System.out.println("User Connected");
             }
         } catch (IOException e) {
             e.printStackTrace(System.out);

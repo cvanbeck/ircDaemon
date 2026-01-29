@@ -1,11 +1,12 @@
 package com.github.cvanb002;
 
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MessageCentre {
-    CopyOnWriteArrayList<ClientHandler> clients;
+    List<ClientHandler> clients;
 
-    public MessageCentre(CopyOnWriteArrayList<ClientHandler> clients){
+    public MessageCentre(List<ClientHandler> clients){
         this.clients = clients;
     }
 
