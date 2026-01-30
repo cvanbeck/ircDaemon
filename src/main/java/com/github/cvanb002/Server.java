@@ -8,9 +8,12 @@ import java.util.List;
 
 
 public class Server {
+    static List<ClientHandler> clients;
+    static MessageCentre messages;
+
     public static void main(String[] args) throws IOException {
-        List<ClientHandler> clients = Collections.synchronizedList(new ArrayList<>());
-        MessageCentre messages = new MessageCentre(clients);
+        clients = Collections.synchronizedList(new ArrayList<>());
+        messages = new MessageCentre(clients);
 
         int port = 6665; // ports 6665-6669 are often reserved for IRC
 
@@ -24,6 +27,16 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace(System.out);
             System.exit(1);
+        }
+    }
+
+    public static boolean removeClient(ClientHandler client) {
+        try {
+            clients.remove(client);
+            return true;
+        } catch (Exception e) {
+            System.err.print("Failed to remove reference to client.");
+            return false;
         }
     }
 }

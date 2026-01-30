@@ -24,10 +24,13 @@ public class ClientHandler extends Thread {
                 InputThread in = new InputThread(clientSocket.getInputStream(), messageCentre, this);
         ) {
             out = new OutputThread(clientSocket.getOutputStream());
+
             in.start();
             out.start();
             in.join();
+
             clientSocket.close();
+            Server.removeClient(this);
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
