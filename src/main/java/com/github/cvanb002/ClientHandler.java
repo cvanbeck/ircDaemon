@@ -7,12 +7,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class ClientHandler extends Thread {
     Socket clientSocket = null;
-    MessageCentre messages;
+    MessageCentre messageCentre;
     OutputThread out;
-
-    ClientHandler(Socket client, MessageCentre messages) {
+    
+    ClientHandler(Socket client, MessageCentre messageCentre) {
         clientSocket = client;
-        this.messages = messages;
+        this.messageCentre = messageCentre;
     }
 
     public void respond(String message) {
@@ -21,7 +21,7 @@ public class ClientHandler extends Thread {
 
     public void run() {
         try (
-                InputThread in = new InputThread(clientSocket.getInputStream(), messages);
+                InputThread in = new InputThread(clientSocket.getInputStream(), messageCentre, this);
         ) {
             out = new OutputThread(clientSocket.getOutputStream());
             in.start();
@@ -38,18 +38,20 @@ public class ClientHandler extends Thread {
  class InputThread extends Thread implements AutoCloseable {
     BufferedReader in = null;
     MessageCentre messageCentre;
+    ClientHandler sender;
 
-    InputThread(InputStream in, MessageCentre messageCentre) {
+    InputThread(InputStream in, MessageCentre messageCentre, ClientHandler sender) {
         super("InputThread");
         this.in = new BufferedReader(new InputStreamReader(in));
         this.messageCentre = messageCentre;
+        this.sender = sender;
     }
 
     public void run() {
         String inputLine;
         try {
             while ((inputLine = in.readLine()) != null) {
-                messageCentre.sendMessage(inputLine);
+                messageCentre.sendMessage(inputLine, sender);
             }
         } catch (IOException e) {
             e.printStackTrace(System.out);

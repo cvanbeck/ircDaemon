@@ -23,7 +23,7 @@ public class testClient {
                         new InputStreamReader(System.in));
         ) {
             String userInput;
-
+            System.out.println("Succesfully Joined Server");
             new Thread(new Runnable() {
                 @Override
                 public void run(){

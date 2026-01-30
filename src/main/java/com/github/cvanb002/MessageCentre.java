@@ -10,9 +10,11 @@ public class MessageCentre {
         this.clients = clients;
     }
 
-    public void sendMessage(String message){
-        for(ClientHandler client : clients){
-            client.respond(message);
+    public void sendMessage(String message, ClientHandler sender){
+        for(ClientHandler client : clients) {
+            if (sender != client) {
+                client.respond(message);
+            }
         }
     }
 
