@@ -29,6 +29,7 @@ public class ClientHandler extends Thread {
             out.start();
             in.join();
 
+            out.close();
             clientSocket.close();
             Server.removeClient(this);
         } catch (Exception e) {
