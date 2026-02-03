@@ -6,7 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 
 public class ClientHandler extends Thread {
-    Socket clientSocket = null;
+    Socket clientSocket;
     MessageCentre messageCentre;
     OutputThread out;
     
@@ -40,7 +40,7 @@ public class ClientHandler extends Thread {
 }
 
  class InputThread extends Thread implements AutoCloseable {
-    BufferedReader in = null;
+    BufferedReader in;
     MessageCentre messageCentre;
     ClientHandler sender;
 
@@ -71,15 +71,17 @@ public class ClientHandler extends Thread {
 class OutputThread extends Thread implements AutoCloseable {
     PrintWriter out;
     LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
+    boolean isOpen  ;
 
     OutputThread(OutputStream out) {
         super("OutputThread");
         this.out = new PrintWriter(out, true);
+        isOpen = true;
     }
 
     public void run() {
         try {
-            while (true) {
+            while (isOpen) {
                 String message = queue.take();
                 out.println(message);
             }
@@ -94,6 +96,7 @@ class OutputThread extends Thread implements AutoCloseable {
 
     @Override
     public void close() throws IOException {
+        isOpen = false;
         out.close();
     }
 }
