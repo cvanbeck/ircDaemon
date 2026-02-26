@@ -40,10 +40,15 @@ public class ParserTest {
         assertThrows(InputMismatchException.class, scanner::stripCRLF);
     }
 
-//    @Test
-//    public void ignoresMessagesGreaterThan512Chars(){
-//
-//    }
+    @Test
+    public void ignoresMessagesGreaterThan512Chars(){
+        String string = "a";
+        Scanner scanner = new Scanner(string);
+        assertTrue(scanner.exceedsLength());
+
+        scanner = new Scanner(string.repeat(513));
+        assertFalse(scanner.exceedsLength());
+    }
 //
 //    @Test
 //    public void tokeniserSplitsCorrectly(){
