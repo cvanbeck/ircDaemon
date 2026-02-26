@@ -13,20 +13,20 @@ import java.util.List;
 
 public class ParserTest {
 
+/* TODO: These tests only work because the methods they're calling are public, realistically this is hacky and they should be
+    private. Therefore I need to rewrite half of them */
+
     @Test
     public void scannerChecksCRLF(){
         String containsCRLF = ":alice!alice@host PRIVMSG #chatroom :Hello!\\r\\n";
         String notContainsCRLF = ":alice!alice@host PRIVMSG #chatroom :Hello!";
 
-
         Scanner scanner = new Scanner(containsCRLF);
-        assertTrue(scanner.checkCRLF());
+        assertTrue(scanner.containsCRLF());
 
         scanner = new Scanner(notContainsCRLF);
-        assertFalse(scanner.checkCRLF());
-
+        assertFalse(scanner.containsCRLF());
     }
-
 
     @Test
     public void scannerStripsCRLF(){
@@ -86,10 +86,5 @@ public class ParserTest {
         scanner = new Scanner(input);
         tokenised = scanner.scanTokens();
         assertEquals(correctOutput, tokenised);
-
-
-
-
     }
-
 }

@@ -9,13 +9,30 @@ public class Scanner{
     String input = "";
     List<String> tokens = new ArrayList<>();
 
-    int start = 0;
-    int current = 0;
+    private int start = 0;
+    private int current = 0;
 
     public Scanner(String input){
         this.input = input;
     }
 
+    public List<String> getTokens(){
+        return tokens;
+    }
+
+    public IRC.Numerics parse(){
+        /* TODO: Need to rewrite this, I want to use enums for numerics but unsure if this is where I should add them */
+        if(inputTooLong()){
+            return IRC.Numerics.ERR_INPUT_TOO_LONG;
+        }
+
+        if(!containsCRLF()){
+            return IRC.Numerics.ERR_UNKNOWNERROR;
+        }
+
+        scanTokens();
+        return IRC.Numerics.SUCCESS;
+    }
 
     public List<String> scanTokens() {
         while(!finished()){
@@ -34,8 +51,6 @@ public class Scanner{
             current++;
         }
         return tokens;
-
-
     }
 
     private boolean isSource(String input){
@@ -44,9 +59,10 @@ public class Scanner{
 
     private boolean finished(){
         return current >= input.length();
-    }
+    };
 
-    public boolean checkCRLF(){
+    // TODO: Most of these functions should be private, so need a rewrite.
+    public boolean containsCRLF(){
         return input.endsWith("\\r\\n");
     }
 
@@ -56,11 +72,9 @@ public class Scanner{
     }
 
     public String stripCRLF(){
-        if (checkCRLF()){
+        if (containsCRLF()){
             return input.substring(0, input.length() - 4);
         } throw new InputMismatchException("No CRLF");
     }
-
-
 
 }

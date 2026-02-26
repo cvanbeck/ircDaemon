@@ -9,6 +9,12 @@ public class IRC {
         public static char TAGS = '@';
     }
 
+    public enum Numerics {
+        SUCCESS,
+        ERR_INPUT_TOO_LONG,
+        ERR_UNKNOWNERROR
+    }
+
     public enum Commands {
         PRIVMSG,
         USER,
