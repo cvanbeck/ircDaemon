@@ -71,18 +71,13 @@ public class Scanner {
     }
 
     private boolean isTag(String input) {
-        return (tokens.isEmpty() && input.charAt(0) == IRC.Constants.TAGSPREPEND);
+        return !contains(IRC.Type.TAG) && ( tokens.isEmpty() && input.charAt(0) == IRC.Constants.TAGSPREPEND);
     }
 
     private boolean isSource(String input) {
-        return (tokens.isEmpty() && input.charAt(0) == IRC.Constants.SOURCEPREPEND) ||
-                (tokens.size() == 1 && contains(IRC.Type.TAG) && input.charAt(0) == IRC.Constants.SOURCEPREPEND);
-    }
-
-    ;
-
-    private boolean endOfLine() {
-        return input.substring(current).equals("\\r\\n");
+        return !contains(IRC.Type.SOURCE) &&
+                ((tokens.isEmpty() && input.charAt(0) == IRC.Constants.SOURCEPREPEND) ||
+                (tokens.size() == 1 && contains(IRC.Type.TAG) && input.charAt(0) == IRC.Constants.SOURCEPREPEND));
     }
 
     private boolean isCommand(String token) {
@@ -94,6 +89,10 @@ public class Scanner {
 
     private boolean isParameter() {
         return tokens.size() >= 1 && contains(IRC.Type.COMMAND);
+    }
+
+    private boolean endOfLine() {
+        return input.substring(current).equals("\\r\\n");
     }
 
     private boolean contains(IRC.Type type) {
