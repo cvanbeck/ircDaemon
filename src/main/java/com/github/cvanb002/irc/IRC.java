@@ -9,5 +9,17 @@ public class IRC {
         public static char TAGS = '@';
     }
 
+    public enum Commands {
+        PRIVMSG,
+        USER,
+        PING,
+        PONG,
+        OPER,
+        QUIT,
+        ERROR,
+        JOIN,
+        KICK
+    }
+
 
 }
