@@ -44,27 +44,52 @@ public class ParserTest {
     public void ignoresMessagesGreaterThan512Chars(){
         String string = "a";
         Scanner scanner = new Scanner(string);
-        assertTrue(scanner.exceedsLength());
+        assertTrue(scanner.inputTooLong());
 
         scanner = new Scanner(string.repeat(513));
-        assertFalse(scanner.exceedsLength());
+        assertFalse(scanner.inputTooLong());
     }
-//
-//    @Test
-//    public void tokeniserSplitsCorrectly(){
-//        String input = ":alice!alice@host PRIVMSG #chatroom :Hello!\\r\\n";
-//        List<String> tokenised = new ArrayList<String>();
-//        List<String> correctOutput = new ArrayList<String>()  ;
-//        correctOutput.add(":alice!alice@host");
-//        correctOutput.add("PRIVMSG");
-//        correctOutput.add("#chatroom");
-//        correctOutput.add(":Hello!");
-//
-//
-//        Scanner scanner = new Scanner(input);
-//        tokenised = scanner.scanTokens();
-//
-//        assertEquals(tokenised, correctOutput);
-//    }
+
+    @Test
+    public void tokeniserSplitsCorrectly(){
+        List<String> tokenised = new ArrayList<String>();
+
+        String input = ":alice!alice@host PRIVMSG #chatroom :Hello! How are you";
+        List<String> correctOutput = new ArrayList<String>()  ;
+        correctOutput.add(":alice!alice@host");
+        correctOutput.add("PRIVMSG");
+        correctOutput.add("#chatroom");
+        correctOutput.add(":Hello! How are you");
+
+
+        Scanner scanner = new Scanner(input);
+        tokenised = scanner.scanTokens();
+        assertEquals(correctOutput, tokenised);
+
+
+        input = "CAP REQ :sasl message-tags foo";
+        correctOutput = new ArrayList<String>()  ;
+        correctOutput.add("CAP");
+        correctOutput.add("REQ");
+        correctOutput.add(":sasl message-tags foo");
+        scanner = new Scanner(input);
+        tokenised = scanner.scanTokens();
+        assertEquals(correctOutput, tokenised);
+
+        input = "@id=234AB :dan!d@localhost PRIVMSG #chan :Hey what's up!";
+        correctOutput = new ArrayList<String>()  ;
+        correctOutput.add("@id=234AB");
+        correctOutput.add(":dan!d@localhost");
+        correctOutput.add("PRIVMSG");
+        correctOutput.add("#chan");
+        correctOutput.add(":Hey what's up!");
+        scanner = new Scanner(input);
+        tokenised = scanner.scanTokens();
+        assertEquals(correctOutput, tokenised);
+
+
+
+
+    }
 
 }
