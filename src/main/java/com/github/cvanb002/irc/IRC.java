@@ -4,6 +4,9 @@ public class IRC {
 
     public static class Constants {
         public static int MAXLENGTH = 512;
+        public static char SEPERATOR = ' ';
+        public static char EXTENDEDPARAM= ':';
+        public static char TAGS = '@';
     }
 
 
