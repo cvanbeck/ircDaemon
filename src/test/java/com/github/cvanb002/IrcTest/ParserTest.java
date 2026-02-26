@@ -7,6 +7,7 @@ import com.github.cvanb002.irc.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 
@@ -19,19 +20,26 @@ public class ParserTest {
 
 
         Scanner scanner = new Scanner(containsCRLF);
-        assertTrue(Scanner.checkCRLF());
+        assertTrue(scanner.checkCRLF());
 
         scanner = new Scanner(notContainsCRLF);
-        assertFalse(Scanner.checkCRLF(notContainsCRLF));
+        assertFalse(scanner.checkCRLF());
 
     }
 
 
-//    @Test
-//    public void scannerStripsCRLF(){
-//
-//    }
-//
+    @Test
+    public void scannerStripsCRLF(){
+        String containsCRLF = ":alice!alice@host PRIVMSG #chatroom :Hello!\\r\\n";
+        String notContainsCRLF = ":alice!alice@host PRIVMSG #chatroom :Hello!";
+
+        Scanner scanner = new Scanner(containsCRLF);
+        assertEquals(notContainsCRLF, scanner.stripCRLF());
+
+        scanner = new Scanner(notContainsCRLF);
+        assertThrows(InputMismatchException.class, scanner::stripCRLF);
+    }
+
 //    @Test
 //    public void ignoresMessagesGreaterThan512Chars(){
 //
