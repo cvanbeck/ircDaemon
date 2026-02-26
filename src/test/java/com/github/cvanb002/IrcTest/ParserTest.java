@@ -162,17 +162,17 @@ public class ParserTest {
     }
 
     @Test
-    public void tokeniseTagSourceParams(){
+    public void canHandleIncorrectSequence() {
         List<Token> tokens;
-        Scanner scanner = new Scanner("@id=234AB :dan!d@localhost PRIVMSG #chan :Hey what's up!\\r\\n");
+        Scanner scanner = new Scanner(":alice!alice@host @id=234AB @id=234AB @id=234AB\\r\\n");
         tokens = scanner.scanTokens();
 
         List<Token> expected = new ArrayList<>();
-        expected.add(new Token("@id=234AB", IRC.Type.TAG));
-        expected.add(new Token(":dan!d@localhost", IRC.Type.SOURCE));
-        expected.add(new Token("PRIVMSG", IRC.Type.COMMAND));
-        expected.add(new Token("#chan", IRC.Type.PARAMETER));
-        expected.add(new Token(":Hey what's up!", IRC.Type.PARAMETER));
+        // This wouldn't work as the command doesn't exist, buts that's for the parsers to figure out not the scanner
+        expected.add(new Token(":alice!alice@host", IRC.Type.SOURCE));
+        expected.add(new Token("@id=234AB", IRC.Type.COMMAND));
+        expected.add(new Token("@id=234AB", IRC.Type.PARAMETER));
+        expected.add(new Token("@id=234AB", IRC.Type.PARAMETER));
 
         checkEqual(expected, tokens);
     }
