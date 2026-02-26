@@ -1,4 +1,4 @@
-package com.github.cvanb002;
+package com.github.cvanb002.server;
 
 import java.io.IOException;
 import java.net.*;

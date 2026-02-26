@@ -1,4 +1,4 @@
-package com.github.cvanb002;
+package com.github.cvanb002.server;
 
 import java.util.List;
 
