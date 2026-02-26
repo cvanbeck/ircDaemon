@@ -16,11 +16,17 @@ public class Scanner{
         return input.endsWith("\\r\\n");
     }
 
+    public boolean exceedsLength(){
+        // Maximum message length for IRC is 512 bytes
+        return input.length() < IRC.Constants.MAXLENGTH ;
+    }
+
     public String stripCRLF(){
         if (checkCRLF()){
             return input.substring(0, input.length() - 4);
         } throw new InputMismatchException("No CRLF");
     }
+
 
 
 }

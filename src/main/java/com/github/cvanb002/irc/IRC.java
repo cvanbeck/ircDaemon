@@ -1,13 +1,10 @@
 package com.github.cvanb002.irc;
 
-public class Parser {
-    public static void run(String input){
-        Scanner scanner = new Scanner(input);
-        List<Token> tokens = scanner.scanTokens();
+public class IRC {
 
-        for (Token token : tokens){
-            System.out.println(token);
-        }
-
+    public static class Constants {
+        public static int MAXLENGTH = 512;
     }
+
+
 }
