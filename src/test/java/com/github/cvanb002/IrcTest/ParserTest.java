@@ -44,47 +44,53 @@ public class ParserTest {
     public void ignoresMessagesGreaterThan512Chars(){
         String string = "a";
         Scanner scanner = new Scanner(string);
-        assertTrue(scanner.inputTooLong());
+        assertFalse(scanner.inputTooLong());
 
         scanner = new Scanner(string.repeat(513));
-        assertFalse(scanner.inputTooLong());
+        assertTrue(scanner.inputTooLong());
     }
+
+
+    public void checkEqual(List<Token> first, List<Token> second){
+        for(int i = 0; i < first.size(); i++){
+            assertEquals(first.get(i).getType(), second.get(i).getType());
+            assertEquals(first.get(i).getToken(), second.get(i).getToken());
+        }
+    }
+
 
     @Test
     public void tokeniserSplitsCorrectly(){
-        List<String> tokenised = new ArrayList<String>();
+        List<Token> tokenised = new ArrayList<>();
 
         String input = ":alice!alice@host PRIVMSG #chatroom :Hello! How are you";
-        List<String> correctOutput = new ArrayList<String>()  ;
-        correctOutput.add(":alice!alice@host");
-        correctOutput.add("PRIVMSG");
-        correctOutput.add("#chatroom");
-        correctOutput.add(":Hello! How are you");
-
-
+        List<Token> correctOutput = new ArrayList<>()  ;
+        correctOutput.add(new Token(":alice!alice@host", IRC.Type.SOURCE));
+        correctOutput.add(new Token("PRIVMSG", IRC.Type.COMMAND));
+        correctOutput.add(new Token("#chatroom", IRC.Type.PARAMETER));
+        correctOutput.add(new Token(":Hello! How are you", IRC.Type.PARAMETER));
         Scanner scanner = new Scanner(input);
         tokenised = scanner.scanTokens();
-        assertEquals(correctOutput, tokenised);
-
+        checkEqual(correctOutput, tokenised);
 
         input = "CAP REQ :sasl message-tags foo";
-        correctOutput = new ArrayList<String>()  ;
-        correctOutput.add("CAP");
-        correctOutput.add("REQ");
-        correctOutput.add(":sasl message-tags foo");
+        correctOutput = new ArrayList<>()  ;
+        correctOutput.add(new Token("CAP", IRC.Type.COMMAND));
+        correctOutput.add(new Token("REQ", IRC.Type.PARAMETER));
+        correctOutput.add(new Token(":sasl message-tags foo", IRC.Type.PARAMETER));
         scanner = new Scanner(input);
         tokenised = scanner.scanTokens();
-        assertEquals(correctOutput, tokenised);
+        checkEqual(correctOutput, tokenised);
 
         input = "@id=234AB :dan!d@localhost PRIVMSG #chan :Hey what's up!";
-        correctOutput = new ArrayList<String>()  ;
-        correctOutput.add("@id=234AB");
-        correctOutput.add(":dan!d@localhost");
-        correctOutput.add("PRIVMSG");
-        correctOutput.add("#chan");
-        correctOutput.add(":Hey what's up!");
+        correctOutput = new ArrayList<>()  ;
+        correctOutput.add(new Token("@id=234AB", IRC.Type.TAG));
+        correctOutput.add(new Token(":dan!d@localhost", IRC.Type.SOURCE));
+        correctOutput.add(new Token("PRIVMSG", IRC.Type.COMMAND));
+        correctOutput.add(new Token("#chan", IRC.Type.PARAMETER));
+        correctOutput.add(new Token(":Hey what's up!", IRC.Type.PARAMETER));
         scanner = new Scanner(input);
         tokenised = scanner.scanTokens();
-        assertEquals(correctOutput, tokenised);
+        checkEqual(correctOutput, tokenised);
     }
 }
