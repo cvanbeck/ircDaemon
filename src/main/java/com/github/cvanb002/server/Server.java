@@ -6,20 +6,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.lang.System.exit;
+
 
 public class Server {
-    static List<ClientHandler> clients;
-    static MessageCentre messages;
+    List<ClientHandler> clients;
+    MessageCentre messages;
+    int port;
 
-    public static void main(String[] args) throws IOException {
+    public Server(int port){
         clients = Collections.synchronizedList(new ArrayList<>());
         messages = new MessageCentre(clients);
+        this.port = port;
 
-        int port = 6665; // ports 6665-6669 are often reserved for IRC
+    }
 
+
+    public void run() throws IOException {
         try(ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName(null));){
             while(true){
-                ClientHandler client = new ClientHandler(serverSocket.accept(), messages);
+                ClientHandler client = new ClientHandler(serverSocket.accept(), messages, this);
                 clients.add(client);
                 client.start();
                 System.out.println("User Connected");
@@ -29,7 +35,7 @@ public class Server {
         }
     }
 
-    public static boolean removeClient(ClientHandler client) {
+    public boolean removeClient(ClientHandler client) {
         try {
             clients.remove(client);
             return true;
@@ -37,5 +43,9 @@ public class Server {
             System.err.print("Failed to remove reference to client.");
             return false;
         }
+    }
+
+    public void closeServer(){
+        exit(1);
     }
 }
