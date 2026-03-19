@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ParserTest {
 
-/* TODO: These tests only work because the methods they're calling are public, realistically this is hacky and they should be
+/* TODO: Some of these tests only work because the methods they're calling are public, realistically this is hacky and they should be
     private. Therefore I need to rewrite half of them */
 
     @Test

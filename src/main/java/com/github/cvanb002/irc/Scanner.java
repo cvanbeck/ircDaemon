@@ -1,7 +1,6 @@
 package com.github.cvanb002.irc;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 
 public class Scanner {
@@ -17,18 +16,18 @@ public class Scanner {
     }
 
 
-    public IRC.Numerics parse() {
+    public IRC.Numeric parse() {
         /* TODO: Need to rewrite this, I want to use enums for numerics but unsure if this is where I should add them */
         if (inputTooLong()) {
-            return IRC.Numerics.ERR_INPUT_TOO_LONG;
+            return IRC.Numeric.ERR_INPUT_TOO_LONG;
         }
 
         if (!containsCRLF()) {
-            return IRC.Numerics.ERR_UNKNOWNERROR;
+            return IRC.Numeric.ERR_UNKNOWNERROR;
         }
 
         scanTokens();
-        return IRC.Numerics.SUCCESS;
+        return IRC.Numeric.SUCCESS;
     }
 
     public List<Token> scanTokens() {
@@ -61,8 +60,6 @@ public class Scanner {
             }
             current++;
         }
-
-
         return tokens;
     }
 
@@ -75,20 +72,20 @@ public class Scanner {
     }
 
     private boolean isSource(String input) {
-        return !contains(IRC.Type.SOURCE) &&
-                ((tokens.isEmpty() && input.charAt(0) == IRC.Constants.SOURCEPREPEND) ||
-                (tokens.size() == 1 && contains(IRC.Type.TAG) && input.charAt(0) == IRC.Constants.SOURCEPREPEND));
+        return !contains(IRC.Type.SOURCE) && (
+                    (tokens.isEmpty() && input.charAt(0) == IRC.Constants.SOURCEPREPEND) ||
+                    (tokens.size() == 1 && contains(IRC.Type.TAG) && input.charAt(0) == IRC.Constants.SOURCEPREPEND));
     }
 
     private boolean isCommand(String token) {
         return !contains(IRC.Type.COMMAND) && (
-                (tokens.isEmpty() && !isTag(token) && !isSource(token)) ||
-                        (tokens.size() == 1 && contains(IRC.Type.TAG) || contains(IRC.Type.SOURCE)) ||
-                        (tokens.size() == 2 && contains(IRC.Type.TAG) && contains(IRC.Type.SOURCE)));
+                    (tokens.isEmpty() && !isTag(token) && !isSource(token)) ||
+                    (tokens.size() == 1 && contains(IRC.Type.TAG) || contains(IRC.Type.SOURCE)) ||
+                    (tokens.size() == 2 && contains(IRC.Type.TAG) && contains(IRC.Type.SOURCE)));
     }
 
     private boolean isParameter() {
-        return tokens.size() >= 1 && contains(IRC.Type.COMMAND);
+        return !tokens.isEmpty() && contains(IRC.Type.COMMAND);
     }
 
     private boolean endOfLine() {
@@ -107,8 +104,6 @@ public class Scanner {
     private boolean finished() {
         return current >= input.length();
     }
-
-    ;
 
     // TODO: Most of these functions should be private, so need a rewrite.
     public boolean containsCRLF() {
