@@ -10,10 +10,21 @@ public class IRC {
         public static char SOURCEPREPEND = ':';
     }
 
-    public enum Numerics {
-        SUCCESS,
-        ERR_INPUT_TOO_LONG,
-        ERR_UNKNOWNERROR
+    public enum Numeric {
+        SUCCESS(999), // Not an actual IRC command, use to confirm to server success,
+        ERR_INPUT_TOO_LONG(417),
+        ERR_UNKNOWNERROR(400),
+        ERR_NEEDMOREPARAMS(412);
+
+        private final int code;
+
+        Numeric(int code){
+            this.code = code;
+        }
+
+        public int getCode() {
+            return code;
+        }
     }
 
     public enum Type {
