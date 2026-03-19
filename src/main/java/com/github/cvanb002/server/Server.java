@@ -10,21 +10,21 @@ import static java.lang.System.exit;
 
 public class Server {
     List<ClientHandler> clients;
-    MessageCentre messages;
+    MessageRouter messageRouter;
     int port;
 
     public Server(int port){
         clients = Collections.synchronizedList(new ArrayList<>());
-        messages = new MessageCentre(clients);
+        messageRouter = new MessageRouter(clients);
         this.port = port;
 
     }
 
 
     public void run() throws IOException {
-        try(ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName(null));){
+        try(ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName(null))){
             while(true){
-                ClientHandler client = new ClientHandler(serverSocket.accept(), messages, this);
+                ClientHandler client = new ClientHandler(serverSocket.accept(), messageRouter, this);
                 clients.add(client);
                 client.start();
                 System.out.println("User Connected");

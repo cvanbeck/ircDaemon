@@ -2,10 +2,10 @@ package com.github.cvanb002.server;
 
 import java.util.List;
 
-public class MessageCentre {
+public class MessageRouter {
     List<ClientHandler> clients;
 
-    public MessageCentre(List<ClientHandler> clients){
+    public MessageRouter(List<ClientHandler> clients){
         this.clients = clients;
     }
 

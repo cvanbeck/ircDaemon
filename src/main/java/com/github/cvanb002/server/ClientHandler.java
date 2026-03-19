@@ -1,6 +1,5 @@
 package com.github.cvanb002.server;
 
-import java.io.*;
 import java.net.Socket;
 
 
@@ -8,12 +7,13 @@ import java.net.Socket;
 public class ClientHandler extends Thread {
     Socket clientSocket;
     Server server;
-    MessageCentre messageCentre;
+    MessageRouter messageRouter;
     OutputThread out;
     
-    ClientHandler(Socket client, MessageCentre messageCentre, Server server) {
+    ClientHandler(Socket client, MessageRouter messageRouter, Server server) {
         clientSocket = client;
-        this.messageCentre = messageCentre;
+        this.server = server;
+        this.messageRouter = messageRouter;
     }
 
     public void respond(String message) {
@@ -22,7 +22,7 @@ public class ClientHandler extends Thread {
 
     public void run() {
         try (
-                InputThread in = new InputThread(clientSocket.getInputStream(), messageCentre, this);
+                InputThread in = new InputThread(clientSocket.getInputStream(), messageRouter, this)
         ) {
             out = new OutputThread(clientSocket.getOutputStream());
 
