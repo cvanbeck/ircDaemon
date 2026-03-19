@@ -2,7 +2,10 @@ package com.github.cvanb002.mediator;
 
 
 import com.github.cvanb002.irc.IRC;
+import com.github.cvanb002.server.Client;
 import com.github.cvanb002.server.MessageRouter;
+
+import java.util.List;
 
 public class CommandHandler {
     // Module for carrying out IRC commands
@@ -11,6 +14,20 @@ public class CommandHandler {
     CommandHandler(MessageRouter router){
         this.router = router;
     }
+
+    public IRC.Numeric nick(Client client, List<String> parameters){
+        if(nickInUse()){
+            return IRC.Numeric.ERR_NICKNAMEINUSE;
+        }
+        if(!validNick()){
+            return IRC.Numeric.ERR_ERRONEUSNICKNAME;
+        }
+        if(noNick()){
+            return IRC.Numeric.NONICKNAMEGIVEN;
+        }
+        client.setUser(parameters.get(0));
+        return IRC.Numeric.SUCCESS;
+    };
 
     public void user(){};
 
