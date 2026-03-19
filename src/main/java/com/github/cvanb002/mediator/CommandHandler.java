@@ -25,7 +25,7 @@ public class CommandHandler {
         if(noNick()){
             return IRC.Numeric.NONICKNAMEGIVEN;
         }
-        client.setUser(parameters.get(0));
+        client.setNick(parameters.get(0));
         return IRC.Numeric.SUCCESS;
     };
 
@@ -39,8 +39,6 @@ public class CommandHandler {
             return IRC.Numeric.ERR_NOORIGIN;
         }
 
-        String message = constructMessage(IRC.Commands.PONG, token);
-        router.sendMessage(source, message);
         return IRC.Numeric.SUCCESS;
     };
 
