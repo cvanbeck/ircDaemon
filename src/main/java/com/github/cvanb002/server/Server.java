@@ -9,7 +9,7 @@ import static java.lang.System.exit;
 
 
 public class Server {
-    List<ClientHandler> clients;
+    List<Client> clients;
     MessageRouter messageRouter;
     int port;
 
@@ -24,7 +24,7 @@ public class Server {
     public void run() throws IOException {
         try(ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName(null))){
             while(true){
-                ClientHandler client = new ClientHandler(serverSocket.accept(), messageRouter, this);
+                Client client = new Client(serverSocket.accept(), messageRouter, this);
                 clients.add(client);
                 client.start();
                 System.out.println("User Connected");
@@ -34,7 +34,7 @@ public class Server {
         }
     }
 
-    public boolean removeClient(ClientHandler client) {
+    public boolean removeClient(Client client) {
         try {
             clients.remove(client);
             return true;

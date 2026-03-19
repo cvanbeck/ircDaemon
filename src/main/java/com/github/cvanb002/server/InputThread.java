@@ -8,9 +8,9 @@ import java.io.InputStreamReader;
 public class InputThread extends Thread implements AutoCloseable {
     BufferedReader in;
     MessageRouter messageRouter;
-    ClientHandler sender;
+    Client sender;
 
-    InputThread(InputStream in, MessageRouter messageRouter, ClientHandler sender) {
+    InputThread(InputStream in, MessageRouter messageRouter, Client sender) {
         super("InputThread");
         this.in = new BufferedReader(new InputStreamReader(in));
         this.messageRouter = messageRouter;

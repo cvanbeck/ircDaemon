@@ -4,13 +4,13 @@ import java.net.Socket;
 
 
 
-public class ClientHandler extends Thread {
+public class Client extends Thread {
     Socket clientSocket;
     Server server;
     MessageRouter messageRouter;
     OutputThread out;
     
-    ClientHandler(Socket client, MessageRouter messageRouter, Server server) {
+    Client(Socket client, MessageRouter messageRouter, Server server) {
         clientSocket = client;
         this.server = server;
         this.messageRouter = messageRouter;
