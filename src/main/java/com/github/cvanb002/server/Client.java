@@ -9,6 +9,7 @@ public class Client extends Thread {
     Server server;
     MessageRouter messageRouter;
     OutputThread out;
+    String user;
     
     Client(Socket client, MessageRouter messageRouter, Server server) {
         clientSocket = client;
@@ -18,6 +19,14 @@ public class Client extends Thread {
 
     public void respond(String message) {
         out.send(message);
+    }
+
+    public void setUser(String nick){
+        this.user = nick;
+    }
+
+    public String getUser(){
+        return user;
     }
 
     public void run() {
