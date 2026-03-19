@@ -10,6 +10,7 @@ public class Client extends Thread {
     MessageRouter messageRouter;
     OutputThread out;
     String user;
+    String nick;
     
     Client(Socket client, MessageRouter messageRouter, Server server) {
         clientSocket = client;
@@ -21,13 +22,23 @@ public class Client extends Thread {
         out.send(message);
     }
 
-    public void setUser(String nick){
-        this.user = nick;
+    public void setUser(String user){
+        this.user = user;
     }
 
     public String getUser(){
         return user;
     }
+
+    public void setNick(String nick){
+        this.nick = nick;
+    }
+
+    public String getNick(){
+        return nick;
+    }
+
+
 
     public void run() {
         try (
