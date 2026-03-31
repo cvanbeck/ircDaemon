@@ -2,22 +2,17 @@ package com.github.cvanb002.server;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import static java.lang.System.exit;
 
 
 public class Server {
-    List<Client> clients;
+    State state;
     MessageRouter messageRouter;
     int port;
 
-    public Server(int port){
-        clients = Collections.synchronizedList(new ArrayList<>());
-        messageRouter = new MessageRouter(clients);
+    public Server(int port, State state, MessageRouter router){
         this.port = port;
-
+        this.state = state;
     }
 
 
@@ -25,7 +20,7 @@ public class Server {
         try(ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName(null))){
             while(true){
                 Client client = new Client(serverSocket.accept(), messageRouter, this);
-                clients.add(client);
+                state.addClient(client);
                 client.start();
                 System.out.println("User Connected");
             }
@@ -34,15 +29,10 @@ public class Server {
         }
     }
 
-    public boolean removeClient(Client client) {
-        try {
-            clients.remove(client);
-            return true;
-        } catch (Exception e) {
-            System.err.print("Failed to remove reference to client.");
-            return false;
-        }
+    public State getState(){
+        return state;
     }
+
 
     public void closeServer(){
         exit(1);

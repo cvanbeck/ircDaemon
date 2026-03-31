@@ -9,6 +9,7 @@ public class Client extends Thread {
     Server server;
     MessageRouter messageRouter;
     OutputThread out;
+
     String user;
     String nick;
     
@@ -52,7 +53,7 @@ public class Client extends Thread {
 
             out.close();
             clientSocket.close();
-            server.removeClient(this);
+            server.getState().removeClient(this);
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }

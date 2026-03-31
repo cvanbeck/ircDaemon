@@ -16,6 +16,10 @@ public class Scanner {
     }
 
 
+    public List<Token> getTokens(){
+        return tokens;
+    }
+
     public IRC.Numeric parse() {
         /* TODO: Need to rewrite this, I want to use enums for numerics but unsure if this is where I should add them */
         if (inputTooLong()) {

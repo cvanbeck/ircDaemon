@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class InputThread extends Thread implements AutoCloseable {
+    // Class responsible for listening to incoming messages
     BufferedReader in;
     MessageRouter messageRouter;
     Client sender;
@@ -21,7 +22,9 @@ public class InputThread extends Thread implements AutoCloseable {
         String inputLine;
         try {
             while ((inputLine = in.readLine()) != null) {
-                messageRouter.sendMessage(inputLine, sender);
+                messageRouter.messageRecieved(inputLine, sender);
+                // Deprecated
+                // \smessageRouter.sendMessage(inputLine, sender);
             }
         } catch (IOException e) {
             e.printStackTrace(System.out);

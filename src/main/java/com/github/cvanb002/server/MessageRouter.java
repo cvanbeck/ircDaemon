@@ -2,12 +2,20 @@ package com.github.cvanb002.server;
 
 import java.util.List;
 import java.util.Objects;
+import com.github.cvanb002.model.NetworkProtocol;
 
 public class MessageRouter {
     List<Client> clients;
+    NetworkProtocol protocol;
 
-    public MessageRouter(List<Client> clients){
+    public MessageRouter(List<Client> clients, NetworkProtocol protocol){
         this.clients = clients;
+        this.protocol = protocol;
+    }
+
+
+    public void messageRecieved(String message, Client sender){
+
     }
 
     public void sendMessage(String message, Client sender){

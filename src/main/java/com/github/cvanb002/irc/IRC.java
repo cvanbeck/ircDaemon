@@ -1,6 +1,33 @@
 package com.github.cvanb002.irc;
 
-public class IRC {
+import com.github.cvanb002.model.NetworkProtocol;
+
+import java.util.List;
+
+public class IRC implements NetworkProtocol {
+
+
+    @Override
+    public String processMessage(String message) {
+        Scanner scanner = new Scanner(message);
+        Numeric numericOutcome = scanner.parse();
+        String response = "";
+        if(numericOutcome.getCode() > 0){
+            response = constructResponse(numericOutcome);
+        } else {
+            List<Token> tokens = scanner.getTokens();
+            response = constructResponse(tokens);
+        }
+        return response;
+    }
+
+    private String constructResponse(Numeric numeric){
+
+    }
+
+    private String constructResponse(List<Token> tokens){
+
+    }
 
     public static class Constants {
         public static int MAXLENGTH = 512;
@@ -16,6 +43,9 @@ public class IRC {
         ERR_UNKNOWNERROR(400),
         ERR_NEEDMOREPARAMS(412),
         ERR_NOORIGIN(409),
+        ERR_NICKNAMEINUSE(433),
+        ERR_ERRONEUSNICKNAME(432),
+        ERR_NONICKNAMEGIVEN,
         ERR_ALREADYREGISTERED(462),
         ERR_PASSWDMISMATCH(464),
         ERR_NOOPERHOST(491),
