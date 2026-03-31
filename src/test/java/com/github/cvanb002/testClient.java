@@ -41,7 +41,7 @@ public class testClient {
             }).start();
 
             while ((userInput = stdIn.readLine()) != null){
-                out.println(name + ": " + userInput);
+                out.println(userInput);
                 //System.out.println(in.readLine());
             }
         } catch (IOException e){
