@@ -14,8 +14,8 @@ import java.util.List;
 public class ParserTest {
     @Test
     public void tokeniseCommand(){
-        Scanner scanner = new Scanner("CAP\\r\\n");
-        Message message = scanner.scanMessage();
+        Scanner scanner = new Scanner();
+        Message message = scanner.parse("CAP\\r\\n");
 
         String expected = "CAP";
 
@@ -24,8 +24,8 @@ public class ParserTest {
 
     @Test
     public void tokeniseParameter(){
-        Scanner scanner = new Scanner("CAP REQ\\r\\n");
-        Message message = scanner.scanMessage();
+        Scanner scanner = new Scanner();
+        Message message = scanner.parse("CAP REQ\\r\\n");
 
         String expCommand = "CAP";
         List<String> expParameters = new ArrayList<>();
@@ -37,8 +37,8 @@ public class ParserTest {
 
     @Test
     public void tokeniseMultipleParameter(){
-        Scanner scanner = new Scanner("CAP REQ ANOTHER PARAM\\r\\n");
-        Message message = scanner.scanMessage();
+        Scanner scanner = new Scanner();
+        Message message = scanner.parse("CAP REQ ANOTHER PARAM\\r\\n");
 
         List<String> expected = new ArrayList<>();
         expected.add("REQ");
@@ -51,8 +51,8 @@ public class ParserTest {
 
     @Test
     public void tokeniseExtParameter(){
-        Scanner scanner = new Scanner("CAP :sasl message-tags foo\\r\\n");
-        Message message = scanner.scanMessage();
+        Scanner scanner = new Scanner();
+        Message message = scanner.parse("CAP :sasl message-tags foo\\r\\n");
 
         List<String> expected = new ArrayList<>();
         expected.add(":sasl message-tags foo");
@@ -63,8 +63,8 @@ public class ParserTest {
 
     @Test
     public void tokeniseParamAndExtParameter(){
-        Scanner scanner = new Scanner("CAP REQ ANOTHER :sasl message-tags foo\\r\\n");
-        Message message = scanner.scanMessage();
+        Scanner scanner = new Scanner();
+        Message message = scanner.parse("CAP REQ ANOTHER :sasl message-tags foo\\r\\n");
 
         List<String> expected = new ArrayList<>();
         expected.add("REQ");
@@ -77,8 +77,8 @@ public class ParserTest {
 
     @Test
     public void tokeniseSource(){
-        Scanner scanner = new Scanner(":alice!alice@host PRIVMSG #chatroom\\r\\n");
-        Message message = scanner.scanMessage();
+        Scanner scanner = new Scanner();
+        Message message = scanner.parse(":alice!alice@host PRIVMSG #chatroom\\r\\n");
 
         List<String> expected = new ArrayList<>();
         expected.add("#chatroom");
@@ -90,8 +90,8 @@ public class ParserTest {
 
     @Test
     public void tokeniseSourceAndExtParameter(){
-        Scanner scanner = new Scanner(":alice!alice@host PRIVMSG #chatroom :Hello! How are you\\r\\n");
-        Message message = scanner.scanMessage();
+        Scanner scanner = new Scanner();
+        Message message = scanner.parse(":alice!alice@host PRIVMSG #chatroom :Hello! How are you\\r\\n");
 
         List<String> expected = new ArrayList<>();
         expected.add("#chatroom");
@@ -105,8 +105,8 @@ public class ParserTest {
     @Test
     public void canHandleIncorrectSequence() {
         // This wouldn't work as the command doesn't exist, buts that's for the parsers to figure out not the scanner
-        Scanner scanner = new Scanner(":test!test@host :alice!alice@host PRIVMSG TEST\\r\\n");
-        Message message = scanner.scanMessage();
+        Scanner scanner = new Scanner();
+        Message message = scanner.parse(":test!test@host :alice!alice@host PRIVMSG TEST\\r\\n");
 
         List<String> expected = new ArrayList<>();
         expected.add("PRIVMSG");
@@ -126,8 +126,8 @@ public class ParserTest {
         assertEquals(417, message.getNumeric().getCode());
 
         input = "1";
-        scanner = new Scanner(input);
-        message = scanner.parse();
+        scanner = new Scanner();
+        message = scanner.parse(input);
         assertEquals(400, message.getNumeric().getCode());
     }
 }
