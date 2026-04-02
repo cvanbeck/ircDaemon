@@ -23,7 +23,6 @@ public class Scanner {
             return new Message(IRC.Numeric.ERR_UNKNOWNERROR);
         }
 
-        Message message = scanMessage();
         return scanMessage();
     }
 
@@ -58,15 +57,12 @@ public class Scanner {
             }
             current++;
         }
-
         return message;
     }
-
 
     private boolean endOfLine() {
         return input.substring(current).equals("\\r\\n");
     }
-
 
     private boolean finished() {
         return current >= input.length();
