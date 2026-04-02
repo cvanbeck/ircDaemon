@@ -15,7 +15,7 @@ public class CommandHandler {
         this.router = router;
     }
 
-    public IRC.Numeric nick(Client client, List<String> parameters){
+    /* public IRC.Numeric nick(Client client, List<String> parameters){
         if(nickInUse()){
             return IRC.Numeric.ERR_NICKNAMEINUSE;
         }
@@ -27,7 +27,7 @@ public class CommandHandler {
         }
         client.setNick(parameters.get(0));
         return IRC.Numeric.SUCCESS;
-    };
+    }; */
 
     public void user(){};
 

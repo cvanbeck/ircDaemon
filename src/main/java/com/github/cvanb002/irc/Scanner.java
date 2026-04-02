@@ -40,6 +40,7 @@ public class Scanner {
         while (!finished()) {
             char c = input.charAt(current);
 
+            // If params begin with : then the rest of the message is a singular param.
             if (c == IRC.Constants.EXTENDEDPARAMPREPEND && !isSource(input.substring(current))) {
                 token = input.substring(start, input.length() - 4).strip();
                 addToken(token, IRC.Type.PARAMETER);

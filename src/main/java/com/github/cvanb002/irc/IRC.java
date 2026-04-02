@@ -13,21 +13,21 @@ public class IRC implements NetworkProtocol {
         Numeric numericOutcome = scanner.parse();
         String response = "";
         if(numericOutcome.getCode() > 0){
-            response = constructResponse(numericOutcome);
+            response = "constructResponse(numericOutcome)";
         } else {
             List<Token> tokens = scanner.getTokens();
-            response = constructResponse(tokens);
+            response = "constructResponse(tokens)";
         }
         return response;
     }
 
-    private String constructResponse(Numeric numeric){
+    //private String constructResponse(Numeric numeric){
+    //    return "test"
+    // }
 
-    }
-
-    private String constructResponse(List<Token> tokens){
-
-    }
+    //private String constructResponse(List<Token> tokens){
+    //
+    // }
 
     public static class Constants {
         public static int MAXLENGTH = 512;
@@ -45,7 +45,7 @@ public class IRC implements NetworkProtocol {
         ERR_NOORIGIN(409),
         ERR_NICKNAMEINUSE(433),
         ERR_ERRONEUSNICKNAME(432),
-        ERR_NONICKNAMEGIVEN,
+        ERR_NONICKNAMEGIVEN(999),
         ERR_ALREADYREGISTERED(462),
         ERR_PASSWDMISMATCH(464),
         ERR_NOOPERHOST(491),

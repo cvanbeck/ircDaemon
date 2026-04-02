@@ -13,12 +13,16 @@ public class Server {
     public Server(int port, State state, MessageRouter router){
         this.port = port;
         this.state = state;
+        this.messageRouter = router;
     }
 
 
     public void run() throws IOException {
+        // First trys to create the socket on server side
         try(ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName(null))){
+            System.out.print("Server started");
             while(true){
+                // Then listens to incoming connections on this socket. Creating a new client when connection is made
                 Client client = new Client(serverSocket.accept(), messageRouter, this);
                 state.addClient(client);
                 client.start();

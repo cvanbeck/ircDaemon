@@ -1,31 +1,27 @@
 package com.github.cvanb002.server;
 
+import com.github.cvanb002.irc.Scanner;
+import com.github.cvanb002.irc.Token;
+
 import java.util.List;
 import java.util.Objects;
-import com.github.cvanb002.model.NetworkProtocol;
+
 
 public class MessageRouter {
-    List<Client> clients;
-    NetworkProtocol protocol;
+    State state;
 
-    public MessageRouter(List<Client> clients, NetworkProtocol protocol){
-        this.clients = clients;
-        this.protocol = protocol;
+    public MessageRouter(State state){
+        this.state = state;
     }
-
 
     public void messageRecieved(String message, Client sender){
-
-    }
-
-    public void sendMessage(String message, Client sender){
-        // Deprecated, can be used for testing purposes and sending message to all clients
-        for(Client client : clients) {
-            if (sender != client) {
-                client.respond(message);
-            }
+        Scanner scanner = new Scanner(message);
+        List<Token> tokens = scanner.scanTokens();
+        for (Token token : tokens){
+            System.out.println(token.getType() + ": " + token.getToken());
         }
     }
+
 
     public void sendMessage(String source, String message){
         try{
@@ -38,11 +34,22 @@ public class MessageRouter {
     }
 
     public Client resolveSource(String source){
+        List<Client> clients = state.getClients();
         for(Client client : clients) {
             if(Objects.equals(client.getUser(), source)){
                 return client;
             }
         }
         return null;
+    }
+
+    // Deprecated, can be used for testing purposes and sending message to all clients
+    public void sendMessage(String message, Client sender){
+        List<Client> clients = state.getClients();
+        for(Client client : clients) {
+            if (sender != client) {
+                client.respond(message);
+            }
+        }
     }
 }
