@@ -2,6 +2,7 @@ package com.github.cvanb002.server;
 
 import com.github.cvanb002.irc.Scanner;
 import com.github.cvanb002.irc.Token;
+import com.github.cvanb002.model.Message;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,10 +17,8 @@ public class MessageRouter {
 
     public void messageRecieved(String message, Client sender){
         Scanner scanner = new Scanner(message);
-        List<Token> tokens = scanner.scanTokens();
-        for (Token token : tokens){
-            System.out.println(token.getType() + ": " + token.getToken());
-        }
+        Message scannedMessage = scanner.scanMessage();
+        System.out.println(scannedMessage.toString());
     }
 
 
