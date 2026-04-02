@@ -9,12 +9,11 @@ public class Scanner {
     int current;
     String input = "";
 
-    public Scanner(String input) {
-        this.input = input;
+    public Scanner() {
     }
 
 
-    public Message parse() {
+    public Message parse(String input) {
         /* TODO: Need to rewrite this, should return a Message with the correct numeric */
         if (inputTooLong()) {
             return new Message(IRC.Numeric.ERR_INPUT_TOO_LONG);
@@ -23,10 +22,11 @@ public class Scanner {
             return new Message(IRC.Numeric.ERR_UNKNOWNERROR);
         }
 
-        return scanMessage();
+        return scanMessage(input);
     }
 
-    public Message scanMessage() {
+    public Message scanMessage(String input) {
+        this.input = input;
         String token = "";
         Message message = new Message();
         start = 0;
@@ -69,11 +69,11 @@ public class Scanner {
     }
 
     // TODO: Most of these functions should be private, so need a rewrite.
-    public boolean containsCRLF() {
+    private boolean containsCRLF() {
         return input.endsWith("\\r\\n");
     }
 
-    public boolean inputTooLong() {
+    private boolean inputTooLong() {
         // Maximum message length for IRC is 512 bytes
         return input.length() > IRC.Constants.MAXLENGTH;
     }
