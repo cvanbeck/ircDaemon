@@ -14,6 +14,7 @@ public class Scanner {
 
 
     public Message parse(String input) {
+        this.input = input;
         /* TODO: Need to rewrite this, should return a Message with the correct numeric */
         if (inputTooLong()) {
             return new Message(IRC.Numeric.ERR_INPUT_TOO_LONG);
@@ -25,8 +26,7 @@ public class Scanner {
         return scanMessage(input);
     }
 
-    public Message scanMessage(String input) {
-        this.input = input;
+    private Message scanMessage(String input) {
         String token = "";
         Message message = new Message();
         start = 0;
