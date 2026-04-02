@@ -9,12 +9,9 @@ public class Message {
     private String source = "";
     private String command = "";
     private IRC.Numeric numeric;
-    private List<String> parameters = new ArrayList<String>();
+    private final List<String> parameters = new ArrayList<String>();
 
-    public Message(){
-
-    }
-
+    public Message(){}
 
     public Message(String command){
         this.command = command;
@@ -23,8 +20,7 @@ public class Message {
     public Message(String command, List<String> parameters){
         this.command = command;
         this.parameters.addAll(parameters);
-    };
-
+    }
 
     public Message(String source, String command, List<String> parameters){
         this.source = source;
@@ -36,6 +32,7 @@ public class Message {
         // Used to check if there is an error with a message
         this.numeric = numeric;
     }
+
     public String getCommand() {
         return command;
     }
@@ -53,19 +50,19 @@ public class Message {
     }
 
     public String toString(){
-        String string = "";
+        StringBuilder string = new StringBuilder();
         if(!source.isEmpty()){
-            string += getSource();
+            string.append(getSource());
         }
         if(!command.isEmpty()){
-            string += getCommand();
+            string.append(getCommand());
         }
-        if (parameters.size() > 0){
+        if (!parameters.isEmpty()){
             for(String parameter : parameters){
-                string += parameter;
+                string.append(parameter);
             }
         }
-        return string;
+        return string.toString();
     }
 
     public void addSource(String source){
