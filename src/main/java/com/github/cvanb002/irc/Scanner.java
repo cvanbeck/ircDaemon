@@ -48,8 +48,8 @@ public class Scanner {
             if (c == IRC.Constants.SEPERATOR || endOfLine()) {
                 token = input.substring(start, current).strip();
             // If params begin with : then the rest of the message is a singular param.
-                if(c == ':' && start == 0){
-                    message.addSource(token);
+                if(token.charAt(0) == ':' && start == 0){
+                    message.addSource(token.substring(1));
                 }
                 else if(message.getCommand().isEmpty()){
                     message.addCommand(token);
