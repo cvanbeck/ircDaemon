@@ -23,8 +23,6 @@ public class InputThread extends Thread implements AutoCloseable {
         try {
             while ((inputLine = in.readLine()) != null) {
                 messageRouter.messageRecieved(inputLine, sender);
-                // Deprecated
-                // \smessageRouter.sendMessage(inputLine, sender);
             }
         } catch (IOException e) {
             e.printStackTrace(System.out);

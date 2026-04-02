@@ -8,7 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class OutputThread extends Thread implements AutoCloseable {
     PrintWriter out;
     LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
-    boolean isOpen  ;
+    boolean isOpen ;
 
     OutputThread(OutputStream out) {
         super("OutputThread");

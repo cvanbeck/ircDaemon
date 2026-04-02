@@ -7,9 +7,6 @@ import java.util.List;
 public class State {
     List<Client> clients = Collections.synchronizedList(new ArrayList<>());
 
-    public State(){
-
-    }
 
     public List<Client> getClients(){
         return clients;

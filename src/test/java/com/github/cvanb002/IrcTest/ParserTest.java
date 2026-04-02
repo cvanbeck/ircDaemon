@@ -4,10 +4,10 @@ package com.github.cvanb002.IrcTest;
 import static org.junit.jupiter.api.Assertions.*;
 import com.github.cvanb002.irc.*;
 
+import com.github.cvanb002.model.Message;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 
 
@@ -39,141 +39,122 @@ public class ParserTest {
         assertTrue(scanner.inputTooLong());
     }
 
-
-    public void checkEqual(List<Token> first, List<Token> second){
-        for(int i = 0; i < first.size(); i++){
-            System.out.println(first.get(i).getToken() + " : " + second.get(i).getToken());
-            System.out.println(first.get(i).getType() + " : " + second.get(i).getType());
-            assertEquals(first.get(i).getType(), second.get(i).getType());
-            assertEquals(first.get(i).getToken(), second.get(i).getToken());
-        }
-            System.out.println(" ");
-    }
-
-
     @Test
     public void tokeniseCommand(){
-        List<Token> tokens;
         Scanner scanner = new Scanner("CAP\\r\\n");
-        tokens = scanner.scanTokens();
+        Message message = scanner.scanMessage();
 
-        List<Token> expected = new ArrayList<>();
-        expected.add(new Token("CAP", IRC.Type.COMMAND));
+        String expected = "CAP";
 
-        checkEqual(expected, tokens);
+        assertEquals(expected, message.getCommand());
     }
 
     @Test
     public void tokeniseParameter(){
-        List<Token> tokens;
         Scanner scanner = new Scanner("CAP REQ\\r\\n");
-        tokens = scanner.scanTokens();
+        Message message = scanner.scanMessage();
 
-        List<Token> expected = new ArrayList<>();
-        expected.add(new Token("CAP", IRC.Type.COMMAND));
-        expected.add(new Token("REQ", IRC.Type.PARAMETER));
+        String expCommand = "CAP";
+        List<String> expParameters = new ArrayList<>();
+        expParameters.add("REQ");
 
-        checkEqual(expected, tokens);
+        assertEquals(expCommand, message.getCommand());
+        assertEquals(expParameters, message.getParameters());
     }
 
     @Test
     public void tokeniseMultipleParameter(){
-        List<Token> tokens;
         Scanner scanner = new Scanner("CAP REQ ANOTHER PARAM\\r\\n");
-        tokens = scanner.scanTokens();
+        Message message = scanner.scanMessage();
 
-        List<Token> expected = new ArrayList<>();
-        expected.add(new Token("CAP", IRC.Type.COMMAND));
-        expected.add(new Token("REQ", IRC.Type.PARAMETER));
-        expected.add(new Token("ANOTHER", IRC.Type.PARAMETER));
-        expected.add(new Token("PARAM", IRC.Type.PARAMETER));
+        List<String> expected = new ArrayList<>();
+        expected.add("REQ");
+        expected.add("ANOTHER");
+        expected.add("PARAM");
 
-        checkEqual(expected, tokens);
+        assertEquals("CAP", message.getCommand());
+        assertEquals(expected, message.getParameters());
     }
 
     @Test
     public void tokeniseExtParameter(){
-        List<Token> tokens;
         Scanner scanner = new Scanner("CAP :sasl message-tags foo\\r\\n");
-        tokens = scanner.scanTokens();
+        Message message = scanner.scanMessage();
 
-        List<Token> expected = new ArrayList<>();
-        expected.add(new Token("CAP", IRC.Type.COMMAND));
-        expected.add(new Token(":sasl message-tags foo", IRC.Type.PARAMETER));
+        List<String> expected = new ArrayList<>();
+        expected.add(":sasl message-tags foo");
 
-        checkEqual(expected, tokens);
+        assertEquals("CAP", message.getCommand());
+        assertEquals(expected, message.getParameters());
     }
 
     @Test
     public void tokeniseParamAndExtParameter(){
-        List<Token> tokens;
         Scanner scanner = new Scanner("CAP REQ ANOTHER :sasl message-tags foo\\r\\n");
-        tokens = scanner.scanTokens();
+        Message message = scanner.scanMessage();
 
-        List<Token> expected = new ArrayList<>();
-        expected.add(new Token("CAP", IRC.Type.COMMAND));
-        expected.add(new Token("REQ", IRC.Type.PARAMETER));
-        expected.add(new Token("ANOTHER", IRC.Type.PARAMETER));
-        expected.add(new Token(":sasl message-tags foo", IRC.Type.PARAMETER));
+        List<String> expected = new ArrayList<>();
+        expected.add("REQ");
+        expected.add("ANOTHER");
+        expected.add(":sasl message-tags foo");
 
-        checkEqual(expected, tokens);
+        assertEquals("CAP", message.getCommand());
+        assertEquals(expected, message.getParameters());
     }
 
     @Test
     public void tokeniseSource(){
-        List<Token> tokens;
         Scanner scanner = new Scanner(":alice!alice@host PRIVMSG #chatroom\\r\\n");
-        tokens = scanner.scanTokens();
+        Message message = scanner.scanMessage();
 
-        List<Token> expected = new ArrayList<>();
-        expected.add(new Token(":alice!alice@host", IRC.Type.SOURCE));
-        expected.add(new Token("PRIVMSG", IRC.Type.COMMAND));
-        expected.add(new Token("#chatroom", IRC.Type.PARAMETER));
+        List<String> expected = new ArrayList<>();
+        expected.add("#chatroom");
 
-        checkEqual(expected, tokens);
+        assertEquals("alice!alice@host", message.getSource());
+        assertEquals("PRIVMSG", message.getCommand());
+        assertEquals(expected, message.getParameters());
     }
 
     @Test
     public void tokeniseSourceAndExtParameter(){
-        List<Token> tokens;
         Scanner scanner = new Scanner(":alice!alice@host PRIVMSG #chatroom :Hello! How are you\\r\\n");
-        tokens = scanner.scanTokens();
+        Message message = scanner.scanMessage();
 
-        List<Token> expected = new ArrayList<>();
-        expected.add(new Token(":alice!alice@host", IRC.Type.SOURCE));
-        expected.add(new Token("PRIVMSG", IRC.Type.COMMAND));
-        expected.add(new Token("#chatroom", IRC.Type.PARAMETER));
-        expected.add(new Token(":Hello! How are you", IRC.Type.PARAMETER));
+        List<String> expected = new ArrayList<>();
+        expected.add("#chatroom");
+        expected.add(":Hello! How are you");
 
-        checkEqual(expected, tokens);
-    }
-
-    @Test
-    public void tokeniseTag(){
-        List<Token> tokens;
-        Scanner scanner = new Scanner("@id=234AB PRIVMSG\\r\\n");
-        tokens = scanner.scanTokens();
-
-        List<Token> expected = new ArrayList<>();
-        expected.add(new Token("@id=234AB", IRC.Type.TAG));
-        expected.add(new Token("PRIVMSG", IRC.Type.COMMAND));
-
-        checkEqual(expected, tokens);
+        assertEquals("alice!alice@host", message.getSource());
+        assertEquals("PRIVMSG", message.getCommand());
+        assertEquals(expected, message.getParameters());
     }
 
     @Test
     public void canHandleIncorrectSequence() {
-        List<Token> tokens;
-        Scanner scanner = new Scanner(":alice!alice@host @id=234AB @id=234AB @id=234AB\\r\\n");
-        tokens = scanner.scanTokens();
-
-        List<Token> expected = new ArrayList<>();
         // This wouldn't work as the command doesn't exist, buts that's for the parsers to figure out not the scanner
-        expected.add(new Token(":alice!alice@host", IRC.Type.SOURCE));
-        expected.add(new Token("@id=234AB", IRC.Type.COMMAND));
-        expected.add(new Token("@id=234AB", IRC.Type.PARAMETER));
-        expected.add(new Token("@id=234AB", IRC.Type.PARAMETER));
+        Scanner scanner = new Scanner(":test!test@host :alice!alice@host PRIVMSG TEST\\r\\n");
+        Message message = scanner.scanMessage();
 
-        checkEqual(expected, tokens);
+        List<String> expected = new ArrayList<>();
+        expected.add("PRIVMSG");
+        expected.add("TEST");
+
+        assertEquals("test!test@host", message.getSource());
+        assertEquals(":alice!alice@host", message.getCommand());
+        assertEquals(expected, message.getParameters());
+    }
+
+    @Test
+    public void parseErrorCreatesNumerics(){
+        String input = "1";
+        Scanner scanner = new Scanner(input.repeat(600) + "\\r\\n");
+        Message message = scanner.parse();
+
+        assertEquals(417, message.getNumeric().getCode());
+
+        input = "1";
+        scanner = new Scanner(input);
+        message = scanner.parse();
+        assertEquals(400, message.getNumeric().getCode());
     }
 }
