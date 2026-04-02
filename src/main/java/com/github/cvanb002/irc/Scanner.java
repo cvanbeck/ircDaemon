@@ -17,13 +17,10 @@ public class Scanner {
     public Message parse() {
         /* TODO: Need to rewrite this, should return a Message with the correct numeric */
         if (inputTooLong()) {
-            // Placeholder
-            //return IRC.Numeric.ERR_INPUT_TOO_LONG;
-            return new Message("ERR_INPUT_TOO_LONG");
+            return new Message(IRC.Numeric.ERR_INPUT_TOO_LONG);
         }
         if (!containsCRLF()) {
-            //return IRC.Numeric.ERR_UNKNOWNERROR;
-            return new Message("ERR_UNKNOWNERROR");
+            return new Message(IRC.Numeric.ERR_UNKNOWNERROR);
         }
 
         Message message = scanMessage();
