@@ -1,7 +1,6 @@
 package com.github.cvanb002.server;
 
 import com.github.cvanb002.irc.Scanner;
-import com.github.cvanb002.irc.Token;
 import com.github.cvanb002.model.Message;
 
 import java.util.List;
