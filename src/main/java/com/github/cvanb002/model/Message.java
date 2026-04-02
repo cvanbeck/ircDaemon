@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Message {
-    private String source;
-    private String command;
+    private String source = "";
+    private String command = "";
     private List<String> parameters = new ArrayList<>();
+
+    public Message(){
+
+    }
+
 
     public Message(String command){
         this.command = command;
@@ -35,4 +40,18 @@ public class Message {
     public List<String> getParameters() {
         return parameters;
     }
+
+    public void addSource(String source){
+        this.source = source;
+    }
+
+    public void addCommand(String command){
+        this.command = command;
+    }
+
+    public void addParameter(String parameter){
+        parameters.add(parameter);
+    }
+
+
 }
