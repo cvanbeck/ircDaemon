@@ -12,23 +12,6 @@ import java.util.List;
 
 
 public class ParserTest {
-
-/* TODO: Some of these tests only work because the methods they're calling are public, realistically this is hacky and they should be
-    private. Therefore I need to rewrite half of them */
-
-    @Test
-    public void scannerChecksCRLF(){
-        String containsCRLF = ":alice!alice@host PRIVMSG #chatroom :Hello!\\r\\n";
-        String notContainsCRLF = ":alice!alice@host PRIVMSG #chatroom :Hello!";
-
-        Scanner scanner = new Scanner(containsCRLF);
-        assertTrue(scanner.containsCRLF());
-
-        scanner = new Scanner(notContainsCRLF);
-        assertFalse(scanner.containsCRLF());
-    }
-
-
     @Test
     public void ignoresMessagesGreaterThan512Chars(){
         String string = "a";
@@ -147,8 +130,8 @@ public class ParserTest {
     @Test
     public void parseErrorCreatesNumerics(){
         String input = "1";
-        Scanner scanner = new Scanner(input.repeat(600) + "\\r\\n");
-        Message message = scanner.parse();
+        Scanner scanner = new Scanner();
+        Message message = scanner.parse(input.repeat(600) + "\\r\\n");
 
         assertEquals(417, message.getNumeric().getCode());
 
