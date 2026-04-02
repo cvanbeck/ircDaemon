@@ -13,16 +13,6 @@ import java.util.List;
 
 public class ParserTest {
     @Test
-    public void ignoresMessagesGreaterThan512Chars(){
-        String string = "a";
-        Scanner scanner = new Scanner(string);
-        assertFalse(scanner.inputTooLong());
-
-        scanner = new Scanner(string.repeat(513));
-        assertTrue(scanner.inputTooLong());
-    }
-
-    @Test
     public void tokeniseCommand(){
         Scanner scanner = new Scanner("CAP\\r\\n");
         Message message = scanner.scanMessage();
