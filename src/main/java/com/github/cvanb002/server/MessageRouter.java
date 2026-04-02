@@ -15,8 +15,8 @@ public class MessageRouter {
     }
 
     public void messageRecieved(String message, Client sender){
-        Scanner scanner = new Scanner(message);
-        Message scannedMessage = scanner.scanMessage();
+        Scanner scanner = new Scanner();
+        Message scannedMessage = scanner.parse(message);
         System.out.println(scannedMessage.toString());
     }
 
