@@ -3,7 +3,6 @@ package com.github.cvanb002;
 
 import com.github.cvanb002.irc.Scanner;
 import com.github.cvanb002.mediator.CommandHandler;
-import com.github.cvanb002.server.MessageRouter;
 import com.github.cvanb002.server.Server;
 import com.github.cvanb002.server.State;
 
