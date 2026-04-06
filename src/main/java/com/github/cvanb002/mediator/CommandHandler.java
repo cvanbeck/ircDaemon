@@ -8,30 +8,12 @@ import com.github.cvanb002.server.MessageRouter;
 import java.util.List;
 
 public class CommandHandler {
-    // Module for carrying out IRC commands
-    MessageRouter router;
+    public void handle(String message, Client client){
+        // temp implementation
+        client.send("DEBUG: Message recieved" + message);
+    };
 
-    CommandHandler(MessageRouter router){
-        this.router = router;
-    }
-
-    /* public IRC.Numeric nick(Client client, List<String> parameters){
-        if(nickInUse()){
-            return IRC.Numeric.ERR_NICKNAMEINUSE;
-        }
-        if(!validNick()){
-            return IRC.Numeric.ERR_ERRONEUSNICKNAME;
-        }
-        if(noNick()){
-            return IRC.Numeric.NONICKNAMEGIVEN;
-        }
-        client.setNick(parameters.get(0));
-        return IRC.Numeric.SUCCESS;
-    }; */
-
-    public void user(){};
-
-    public IRC.Numeric ping(String source, String token){
+    private IRC.Numeric ping(String source, String token){
         if(token.isEmpty()){
             return IRC.Numeric.ERR_NEEDMOREPARAMS;
         }
@@ -42,18 +24,18 @@ public class CommandHandler {
         return IRC.Numeric.SUCCESS;
     };
 
-    public void pong(){};
+    private void pong(){};
 
-    public void oper(){};
+    private void oper(){};
 
-    public void quit(){};
+    private void quit(){};
 
-    public void error(){};
+    private void error(){};
 
-    public void join(){};
+    private void join(){};
 
-    public void kick(){};
+    private void kick(){};
 
-    public void privmsg(){};
+    private void privmsg(){};
 
 }
