@@ -26,6 +26,7 @@ public class IRC implements NetworkProtocol {
         public static char EXTENDEDPARAMPREPEND = ':';
         public static char TAGSPREPEND = '@';
         public static char SOURCEPREPEND = ':';
+        public static String CRLF = "\\r\\n";
     }
 
     public enum Numeric {
