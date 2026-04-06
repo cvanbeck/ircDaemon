@@ -1,46 +1,32 @@
 package com.github.cvanb002.server;
 
+import com.github.cvanb002.irc.Scanner;
+import com.github.cvanb002.mediator.CommandHandler;
+
 import java.net.Socket;
 
 
 public class Client extends Thread {
-    Socket clientSocket;
-    Server server;
-    MessageRouter messageRouter;
-    OutputThread out;
+    private Connection connection;
 
-    String user;
-    String nick;
+    private String user;
+    private String nick;
 
-    Client(Socket client, MessageRouter messageRouter, Server server) {
-        clientSocket = client;
-        this.server = server;
-        this.messageRouter = messageRouter;
+    Client(Socket socket, Scanner scanner, CommandHandler commandHandler, Server server) {
+        connection = new Connection(socket, scanner, commandHandler, this);
     }
 
     public void run() {
         // Creates new thread for input and output on client socket,
-        try (
-                InputThread in = new InputThread(clientSocket.getInputStream(), messageRouter, this)
-        ) {
-            out = new OutputThread(clientSocket.getOutputStream());
-            // Starts both input/output socket threads
-            in.start();
-            out.start();
-            in.join();
-
-            // Ensures client connection is closed correctly
-            out.close();
-            clientSocket.close();
-            server.getState().removeClient(this);
+        try {
+            connection.run();
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
     }
 
-
-    public void respond(String message) {
-        out.send(message);
+    public void send(String message){
+        connection.send(message);
     }
 
     public void setUser(String user){
