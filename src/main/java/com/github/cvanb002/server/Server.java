@@ -29,7 +29,7 @@ public class Server {
                 ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName(null))
         ){
             System.out.print("Server started");
-            
+
             while(true){
                 // Then listens to incoming connections on this socket. Creating a new client when connection is made
                 Client client = new Client(serverSocket.accept(), scanner, handler, this);
