@@ -7,18 +7,18 @@ public class Parser {
     // TODO: THis implementation is a mess, defo needs a rework
     int startIndex;
     int currentIndex;
-    String input = "";
 
     public Parser() {
     }
 
     public Message parse(String input) {
-        this.input = input;
-        /* TODO: Need to rewrite this, should return a Message with the correct numeric */
-        if (inputTooLong()) {
+        boolean inputTooLong = input.length() > IRC.Constants.MAXLENGTH;
+        boolean noCRLF = !input.endsWith("\r\n");
+
+        if (inputTooLong) {
             return new Message(IRC.Numeric.ERR_INPUT_TOO_LONG);
         }
-        if (!containsCRLF()) {
+        if (noCRLF) {
             return new Message(IRC.Numeric.ERR_UNKNOWNERROR);
         }
         return scanMessage(input);
@@ -26,54 +26,72 @@ public class Parser {
 
     private Message scanMessage(String input) {
         String token;
+        String tokenType;
         Message message = new Message();
 
         startIndex = 0;
         currentIndex = 0;
 
-        while (!finished()) {
+        while (!finishedScanning(input)) {
             char currentChar = input.charAt(currentIndex);
 
-            if (currentChar == IRC.Constants.SEPERATOR || endOfLine()) {
-                token = input.substring(startIndex, currentIndex).strip();
+            if (currentChar == IRC.Constants.SEPERATOR || endOfLine(input)) {
+                token = createToken(input);
+                tokenType = categoriseToken(token, message);
 
-                if(token.charAt(0) == ':' && startIndex == 0){
-                    message.addSource(token.substring(1));
-                }
-                else if(message.getCommand().isEmpty()){
-                    message.addCommand(token);
-                }
-                else if (token.charAt(0) == ':') {
-                    // Extended params
-                    token = input.substring(startIndex).strip();
-                    message.addParameter(token);
-                    return message; // If an extended parameter is present then you don't need to continue looping
-                }
-                else {
-                    // Regular params
-                    message.addParameter(token);
-                }
+                switch(tokenType) {
+                    case "SOURCE":
+                        message.addSource(token.substring(1));
+                        break;
+                    case "COMMAND":
+                        message.addCommand(token);
+                        break;
+                    case "EXTPARAMETER":
+                        // If an extended parameter is found we just take the rest of the message as a single param
+                        token = createToken(input, startIndex);
+                        message.addParameter(token);
+                        return message;
+                    case"PARAMETER":
+                        // Regular params
+                        message.addParameter(token);
+                        break;
+                    }
                 startIndex = currentIndex;
-            }
+                }
             currentIndex++;
-        }
+            }
         return message;
     }
 
-    private boolean endOfLine() {
+    private boolean endOfLine(String input) {
         return input.substring(currentIndex).equals("\r\n");
     }
 
-    private boolean finished() {
+    private boolean finishedScanning(String input) {
         return currentIndex >= input.length();
     }
 
-    private boolean containsCRLF() {
-        return input.endsWith("\r\n");
+    private String createToken(String input, int startIndex){
+        // Creates substring from start index onwards
+        return input.substring(startIndex).strip();
     }
 
-    private boolean inputTooLong() {
-        // Maximum message length for IRC is 512 bytes
-        return input.length() > IRC.Constants.MAXLENGTH;
+    private String createToken(String input){
+        return input.substring(startIndex, currentIndex).strip();
+    }
+
+
+    private String categoriseToken(String token, Message message){
+        if(token.charAt(0) == ':' && startIndex == 0){
+            return IRC.Type.SOURCE.toString();
+        }
+        else if(message.getCommand().isEmpty()){
+            return IRC.Type.COMMAND.toString();
+        }
+        else if ((token.charAt(0) == ':')){
+            return IRC.Type.EXTPARAMETER.toString();
+        } else {
+            return IRC.Type.PARAMETER.toString();
+        }
     }
 }
