@@ -5,13 +5,12 @@ import com.github.cvanb002.model.Message;
 
 public class Parser {
     // TODO: THis implementation is a mess, defo needs a rework
-    int start;
-    int current;
+    int startIndex;
+    int currentIndex;
     String input = "";
 
     public Parser() {
     }
-
 
     public Message parse(String input) {
         this.input = input;
@@ -22,53 +21,53 @@ public class Parser {
         if (!containsCRLF()) {
             return new Message(IRC.Numeric.ERR_UNKNOWNERROR);
         }
-
         return scanMessage(input);
     }
 
     private Message scanMessage(String input) {
-        String token = "";
+        String token;
         Message message = new Message();
-        start = 0;
-        current = 0;
+
+        startIndex = 0;
+        currentIndex = 0;
 
         while (!finished()) {
-            char c = input.charAt(current);
-            // Checks for extended parameter
-            if (c == ':' && !(message.getCommand().isEmpty())) {
-                token = input.substring(start).strip();
-                message.addParameter(token);
-                return message;
-            }
+            char currentChar = input.charAt(currentIndex);
 
-            if (c == IRC.Constants.SEPERATOR || endOfLine()) {
-                token = input.substring(start, current).strip();
-            // If params begin with : then the rest of the message is a singular param.
-                if(token.charAt(0) == ':' && start == 0){
+            if (currentChar == IRC.Constants.SEPERATOR || endOfLine()) {
+                token = input.substring(startIndex, currentIndex).strip();
+
+                if(token.charAt(0) == ':' && startIndex == 0){
                     message.addSource(token.substring(1));
                 }
                 else if(message.getCommand().isEmpty()){
                     message.addCommand(token);
                 }
+                else if (token.charAt(0) == ':') {
+                    // Extended params
+                    token = input.substring(startIndex).strip();
+                    message.addParameter(token);
+                    return message; // If an extended parameter is present then you don't need to continue looping
+                }
                 else {
+                    // Regular params
                     message.addParameter(token);
                 }
-                start = current;
+                startIndex = currentIndex;
             }
-            current++;
+            currentIndex++;
         }
         return message;
     }
 
     private boolean endOfLine() {
-        return input.substring(current).equals("\r\n");
+        return input.substring(currentIndex).equals("\r\n");
     }
 
     private boolean finished() {
-        return current >= input.length();
+        return currentIndex >= input.length();
     }
 
-    // TODO: Most of these functions should be private, so need a rewrite.
     private boolean containsCRLF() {
         return input.endsWith("\r\n");
     }
