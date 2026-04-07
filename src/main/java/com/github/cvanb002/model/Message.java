@@ -52,17 +52,17 @@ public class Message {
     public String toString(){
         StringBuilder string = new StringBuilder();
         if(!source.isEmpty()){
-            string.append(getSource());
+            string.append(getSource()).append(" ");
         }
         if(!command.isEmpty()){
-            string.append(getCommand());
+            string.append(getCommand()).append(" ");
         }
         if (!parameters.isEmpty()){
             for(String parameter : parameters){
-                string.append(parameter);
+                string.append(parameter).append(" ");
             }
         }
-        return string.toString();
+        return string.toString().strip();
     }
 
     public void addSource(String source){
