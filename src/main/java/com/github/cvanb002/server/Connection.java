@@ -1,8 +1,9 @@
 package com.github.cvanb002.server;
 
 import com.github.cvanb002.irc.IRC;
-import com.github.cvanb002.irc.Scanner;
-import com.github.cvanb002.mediator.CommandHandler;
+import com.github.cvanb002.irc.Parser;
+import com.github.cvanb002.irc.CommandHandler;
+import com.github.cvanb002.model.Client;
 import com.github.cvanb002.model.Message;
 
 import java.io.*;
@@ -10,16 +11,16 @@ import java.net.Socket;
 
 public class Connection implements Runnable {
     private final Socket socket;
-    private final Scanner scanner;
+    private final Parser parser;
     private final CommandHandler commandHandler;
     private final Client client;
 
     private BufferedWriter out;
     private BufferedReader in;
 
-    public Connection(Socket socket, Scanner scanner, CommandHandler commandHandler, Client client){
+    public Connection(Socket socket, Parser parser, CommandHandler commandHandler, Client client){
         this.socket = socket;
-        this.scanner = scanner;
+        this.parser = parser;
         this.commandHandler = commandHandler;
         this.client = client;
 
@@ -40,7 +41,7 @@ public class Connection implements Runnable {
                 if(inputLine.contains("\r\n")){
                     System.out.println(client.getNick() + ": " + inputLine);
                     try {
-                        Message message = scanner.parse(inputLine);
+                        Message message = parser.parse(inputLine);
                         commandHandler.handle(message, client);
                     } catch (Exception e) {
                         // TODO: Update with correct numeric response

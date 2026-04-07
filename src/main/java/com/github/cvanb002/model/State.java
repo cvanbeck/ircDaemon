@@ -1,4 +1,4 @@
-package com.github.cvanb002.server;
+package com.github.cvanb002.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
