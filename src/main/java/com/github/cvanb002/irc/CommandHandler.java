@@ -17,9 +17,6 @@ public class CommandHandler {
         client.send("DEBUG: Message recieved" + message.toString());
         client.send(message.getCommand());
         client.send(message.getSource());
-        client.send("DEBUG Message recieved: " + message.toString());
-        client.send(message.getCommand());
-        client.send(message.getSource());
         for(String param : message.getParameters()){
             client.send(param);
         }
