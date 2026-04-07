@@ -5,10 +5,8 @@ import com.github.cvanb002.server.Connection;
 
 public class Client{
     private Connection connection;
-
     private String user;
     private String nick;
-
 
     public void addConnection(Connection connection){
         this.connection = connection;
@@ -17,7 +15,6 @@ public class Client{
     public void send(String message){
         connection.send(message);
     }
-
 
     public void setUser(String user){
         this.user = user;
@@ -34,9 +31,6 @@ public class Client{
     public String getNick(){
         return nick;
     }
-
-
-
 };
 
 
