@@ -24,19 +24,16 @@ public class testClient {
         ) {
             String userInput;
             System.out.println("Succesfully Joined Server");
-            new Thread(new Runnable() {
-                @Override
-                public void run(){
-                String response;
-                    try {
-                        while(true) {
-                            if ((response = in.readLine()) != null) {
-                                System.out.println(response);
-                            }
+            new Thread(() -> {
+            String response;
+                try {
+                    while(true) {
+                        if ((response = in.readLine()) != null) {
+                            System.out.println(response);
                         }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }).start();
 
