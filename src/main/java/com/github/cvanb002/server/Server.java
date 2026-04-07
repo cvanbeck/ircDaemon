@@ -32,9 +32,12 @@ public class Server {
 
             while(true){
                 // Then listens to incoming connections on this socket. Creating a new client when connection is made
-                Client client = new Client(serverSocket.accept(), scanner, handler, this);
+                Client client = new Client();
+                Connection connection = new Connection(serverSocket.accept(), scanner, handler, client);
+                client.addConnection(connection);
                 state.addClient(client);
-                client.start();
+
+                new Thread(connection).start();
                 System.out.println("User Connected");
             }
         } catch (IOException e) {
