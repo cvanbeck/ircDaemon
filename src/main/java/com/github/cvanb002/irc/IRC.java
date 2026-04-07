@@ -49,6 +49,7 @@ public class IRC {
         SOURCE,
         COMMAND,
         PARAMETER,
+        EXTPARAMETER,
         NULL
     }
 

@@ -26,37 +26,40 @@ public class Parser {
 
     private Message scanMessage(String input) {
         String token;
+        String tokenType;
         Message message = new Message();
 
         startIndex = 0;
         currentIndex = 0;
 
-        while (!finished(input)) {
+        while (!finishedScanning(input)) {
             char currentChar = input.charAt(currentIndex);
 
             if (currentChar == IRC.Constants.SEPERATOR || endOfLine(input)) {
-                token = input.substring(startIndex, currentIndex).strip();
+                token = createToken(input);
+                tokenType = categoriseToken(token, message);
 
-                if(token.charAt(0) == ':' && startIndex == 0){
-                    message.addSource(token.substring(1));
-                }
-                else if(message.getCommand().isEmpty()){
-                    message.addCommand(token);
-                }
-                else if (token.charAt(0) == ':') {
-                    // Extended params
-                    token = input.substring(startIndex).strip();
-                    message.addParameter(token);
-                    return message; // If an extended parameter is present then you don't need to continue looping
-                }
-                else {
-                    // Regular params
-                    message.addParameter(token);
-                }
+                switch(tokenType) {
+                    case "SOURCE":
+                        message.addSource(token.substring(1));
+                        break;
+                    case "COMMAND":
+                        message.addCommand(token);
+                        break;
+                    case "EXTPARAMETER":
+                        // If an extended parameter is found we just take the rest of the message as a single param
+                        token = createToken(input, startIndex);
+                        message.addParameter(token);
+                        return message;
+                    case"PARAMETER":
+                        // Regular params
+                        message.addParameter(token);
+                        break;
+                    }
                 startIndex = currentIndex;
-            }
+                }
             currentIndex++;
-        }
+            }
         return message;
     }
 
@@ -64,7 +67,31 @@ public class Parser {
         return input.substring(currentIndex).equals("\r\n");
     }
 
-    private boolean finished(String input) {
+    private boolean finishedScanning(String input) {
         return currentIndex >= input.length();
+    }
+
+    private String createToken(String input, int startIndex){
+        // Creates substring from start index onwards
+        return input.substring(startIndex).strip();
+    }
+
+    private String createToken(String input){
+        return input.substring(startIndex, currentIndex).strip();
+    }
+
+
+    private String categoriseToken(String token, Message message){
+        if(token.charAt(0) == ':' && startIndex == 0){
+            return IRC.Type.SOURCE.toString();
+        }
+        else if(message.getCommand().isEmpty()){
+            return IRC.Type.COMMAND.toString();
+        }
+        else if ((token.charAt(0) == ':')){
+            return IRC.Type.EXTPARAMETER.toString();
+        } else {
+            return IRC.Type.PARAMETER.toString();
+        }
     }
 }
