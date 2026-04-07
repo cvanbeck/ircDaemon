@@ -10,7 +10,7 @@ import java.io.*;
 import java.net.Socket;
 
 public class Connection implements Runnable {
-    private final Socket socket;
+    private Socket socket;
     private final Parser parser;
     private final CommandHandler commandHandler;
     private final Client client;
@@ -20,6 +20,15 @@ public class Connection implements Runnable {
 
     public Connection(Socket socket, Parser parser, CommandHandler commandHandler, Client client){
         this.socket = socket;
+        this.parser = parser;
+        this.commandHandler = commandHandler;
+        this.client = client;
+    }
+
+    // Used for testing only
+    public Connection(BufferedWriter out, BufferedReader in , Parser parser, CommandHandler commandHandler, Client client){
+        this.out = out;
+        this.in = in;
         this.parser = parser;
         this.commandHandler = commandHandler;
         this.client = client;
@@ -90,8 +99,4 @@ public class Connection implements Runnable {
     private void logOutput(String output) {
         System.out.println(">> " + output);
     }
-
-
-
-
 }
