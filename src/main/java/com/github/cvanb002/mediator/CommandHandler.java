@@ -18,7 +18,12 @@ public class CommandHandler {
 
     public void handle(Message message, Client client){
         // temp implementation
-        client.send("DEBUG: Message recieved" + message.toString());
+        client.send("DEBUG Message recieved: " + message.toString());
+        client.send(message.getCommand());
+        client.send(message.getSource());
+        for(String param : message.getParameters()){
+            client.send(param);
+        }
     }
 
     private IRC.Numeric ping(String source, String token){

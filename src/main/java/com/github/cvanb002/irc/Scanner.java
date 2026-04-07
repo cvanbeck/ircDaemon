@@ -36,7 +36,7 @@ public class Scanner {
             char c = input.charAt(current);
             // Checks for extended parameter
             if (c == ':' && !(message.getCommand().isEmpty())) {
-                token = input.substring(start, input.length() - 4).strip();
+                token = input.substring(start).strip();
                 message.addParameter(token);
                 return message;
             }
@@ -61,7 +61,7 @@ public class Scanner {
     }
 
     private boolean endOfLine() {
-        return input.substring(current).equals("\\r\\n");
+        return input.substring(current).equals("\r\n");
     }
 
     private boolean finished() {
@@ -70,7 +70,7 @@ public class Scanner {
 
     // TODO: Most of these functions should be private, so need a rewrite.
     private boolean containsCRLF() {
-        return input.endsWith("\\r\\n");
+        return input.endsWith("\r\n");
     }
 
     private boolean inputTooLong() {
