@@ -7,18 +7,18 @@ public class Parser {
     // TODO: THis implementation is a mess, defo needs a rework
     int startIndex;
     int currentIndex;
-    String input = "";
 
     public Parser() {
     }
 
     public Message parse(String input) {
-        this.input = input;
-        /* TODO: Need to rewrite this, should return a Message with the correct numeric */
-        if (inputTooLong()) {
+        boolean inputTooLong = input.length() > IRC.Constants.MAXLENGTH;
+        boolean noCRLF = !input.endsWith("\r\n");
+
+        if (inputTooLong) {
             return new Message(IRC.Numeric.ERR_INPUT_TOO_LONG);
         }
-        if (!containsCRLF()) {
+        if (noCRLF) {
             return new Message(IRC.Numeric.ERR_UNKNOWNERROR);
         }
         return scanMessage(input);
@@ -31,10 +31,10 @@ public class Parser {
         startIndex = 0;
         currentIndex = 0;
 
-        while (!finished()) {
+        while (!finished(input)) {
             char currentChar = input.charAt(currentIndex);
 
-            if (currentChar == IRC.Constants.SEPERATOR || endOfLine()) {
+            if (currentChar == IRC.Constants.SEPERATOR || endOfLine(input)) {
                 token = input.substring(startIndex, currentIndex).strip();
 
                 if(token.charAt(0) == ':' && startIndex == 0){
@@ -60,20 +60,11 @@ public class Parser {
         return message;
     }
 
-    private boolean endOfLine() {
+    private boolean endOfLine(String input) {
         return input.substring(currentIndex).equals("\r\n");
     }
 
-    private boolean finished() {
+    private boolean finished(String input) {
         return currentIndex >= input.length();
-    }
-
-    private boolean containsCRLF() {
-        return input.endsWith("\r\n");
-    }
-
-    private boolean inputTooLong() {
-        // Maximum message length for IRC is 512 bytes
-        return input.length() > IRC.Constants.MAXLENGTH;
     }
 }
