@@ -1,5 +1,7 @@
-package com.github.cvanb002.server;
+package com.github.cvanb002.model;
 
+
+import com.github.cvanb002.server.Connection;
 
 public class Client{
     private Connection connection;

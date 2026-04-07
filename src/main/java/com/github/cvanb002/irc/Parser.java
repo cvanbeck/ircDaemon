@@ -3,13 +3,13 @@ package com.github.cvanb002.irc;
 import com.github.cvanb002.model.Message;
 
 
-public class Scanner {
+public class Parser {
     // TODO: THis implementation is a mess, defo needs a rework
     int start;
     int current;
     String input = "";
 
-    public Scanner() {
+    public Parser() {
     }
 
 

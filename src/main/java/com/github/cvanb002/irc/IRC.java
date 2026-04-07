@@ -1,25 +1,6 @@
 package com.github.cvanb002.irc;
 
-import com.github.cvanb002.model.NetworkProtocol;
-
-import java.util.List;
-
-public class IRC implements NetworkProtocol {
-
-
-    @Override
-    public String processMessage(String message) {
-        return "unfinished";
-    }
-
-    //private String constructResponse(Numeric numeric){
-    //    return "test"
-    // }
-
-    //private String constructResponse(List<Token> tokens){
-    //
-    // }
-
+public class IRC {
     public static class Constants {
         public static int MAXLENGTH = 512;
         public static char SEPERATOR = ' ';

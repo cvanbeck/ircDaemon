@@ -1,13 +1,9 @@
-package com.github.cvanb002.mediator;
+package com.github.cvanb002.irc;
 
 
-import com.github.cvanb002.irc.IRC;
 import com.github.cvanb002.model.Message;
-import com.github.cvanb002.server.Client;
-import com.github.cvanb002.server.MessageRouter;
-import com.github.cvanb002.server.State;
-
-import java.util.List;
+import com.github.cvanb002.model.Client;
+import com.github.cvanb002.model.State;
 
 public class CommandHandler {
     private State state;
@@ -36,8 +32,6 @@ public class CommandHandler {
 
         return IRC.Numeric.SUCCESS;
     }
-
-    private void pong(){};
 
     private void oper(){};
 

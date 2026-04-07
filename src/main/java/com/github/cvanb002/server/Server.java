@@ -1,7 +1,9 @@
 package com.github.cvanb002.server;
 
-import com.github.cvanb002.irc.Scanner;
-import com.github.cvanb002.mediator.CommandHandler;
+import com.github.cvanb002.irc.Parser;
+import com.github.cvanb002.irc.CommandHandler;
+import com.github.cvanb002.model.Client;
+import com.github.cvanb002.model.State;
 
 import java.io.IOException;
 import java.net.*;
@@ -11,14 +13,14 @@ import static java.lang.System.exit;
 public class Server {
     int port;
     State state;
-    Scanner scanner;
+    Parser parser;
     CommandHandler handler;
 
 
-    public Server(int port, State state, Scanner scanner, CommandHandler handler){
+    public Server(int port, State state, Parser parser, CommandHandler handler){
         this.port = port;
         this.state = state;
-        this.scanner = scanner;
+        this.parser = parser;
         this.handler = handler;
     }
 
@@ -33,7 +35,7 @@ public class Server {
             while(true){
                 // Then listens to incoming connections on this socket. Creating a new client when connection is made
                 Client client = new Client();
-                Connection connection = new Connection(serverSocket.accept(), scanner, handler, client);
+                Connection connection = new Connection(serverSocket.accept(), parser, handler, client);
                 client.addConnection(connection);
                 state.addClient(client);
 

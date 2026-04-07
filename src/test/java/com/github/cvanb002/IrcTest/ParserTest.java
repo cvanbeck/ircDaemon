@@ -14,8 +14,8 @@ import java.util.List;
 public class ParserTest {
     @Test
     public void tokeniseCommand(){
-        Scanner scanner = new Scanner();
-        Message message = scanner.parse("CAP\r\n");
+        Parser parser = new Parser();
+        Message message = parser.parse("CAP\r\n");
 
         String expected = "CAP";
 
@@ -24,8 +24,8 @@ public class ParserTest {
 
     @Test
     public void tokeniseParameter(){
-        Scanner scanner = new Scanner();
-        Message message = scanner.parse("CAP REQ\r\n");
+        Parser parser = new Parser();
+        Message message = parser.parse("CAP REQ\r\n");
 
         String expCommand = "CAP";
         List<String> expParameters = new ArrayList<>();
@@ -37,8 +37,8 @@ public class ParserTest {
 
     @Test
     public void tokeniseMultipleParameter(){
-        Scanner scanner = new Scanner();
-        Message message = scanner.parse("CAP REQ ANOTHER PARAM\r\n");
+        Parser parser = new Parser();
+        Message message = parser.parse("CAP REQ ANOTHER PARAM\r\n");
 
         List<String> expected = new ArrayList<>();
         expected.add("REQ");
@@ -51,8 +51,8 @@ public class ParserTest {
 
     @Test
     public void tokeniseExtParameter(){
-        Scanner scanner = new Scanner();
-        Message message = scanner.parse("CAP :sasl message-tags foo\r\n");
+        Parser parser = new Parser();
+        Message message = parser.parse("CAP :sasl message-tags foo\r\n");
 
         List<String> expected = new ArrayList<>();
         expected.add(":sasl message-tags foo");
@@ -63,8 +63,8 @@ public class ParserTest {
 
     @Test
     public void tokeniseParamAndExtParameter(){
-        Scanner scanner = new Scanner();
-        Message message = scanner.parse("CAP REQ ANOTHER :sasl message-tags foo\r\n");
+        Parser parser = new Parser();
+        Message message = parser.parse("CAP REQ ANOTHER :sasl message-tags foo\r\n");
 
         List<String> expected = new ArrayList<>();
         expected.add("REQ");
@@ -77,8 +77,8 @@ public class ParserTest {
 
     @Test
     public void tokeniseSource(){
-        Scanner scanner = new Scanner();
-        Message message = scanner.parse(":alice!alice@host PRIVMSG #chatroom\r\n");
+        Parser parser = new Parser();
+        Message message = parser.parse(":alice!alice@host PRIVMSG #chatroom\r\n");
 
         List<String> expected = new ArrayList<>();
         expected.add("#chatroom");
@@ -90,8 +90,8 @@ public class ParserTest {
 
     @Test
     public void tokeniseSourceAndExtParameter(){
-        Scanner scanner = new Scanner();
-        Message message = scanner.parse(":alice!alice@host PRIVMSG #chatroom :Hello! How are you\r\n");
+        Parser parser = new Parser();
+        Message message = parser.parse(":alice!alice@host PRIVMSG #chatroom :Hello! How are you\r\n");
 
         List<String> expected = new ArrayList<>();
         expected.add("#chatroom");
@@ -105,8 +105,8 @@ public class ParserTest {
     @Test
     public void canHandleIncorrectSequence() {
         // This wouldn't work as the command doesn't exist, buts that's for the parsers to figure out not the scanner
-        Scanner scanner = new Scanner();
-        Message message = scanner.parse(":test!test@host :alice!alice@host PRIVMSG TEST\r\n");
+        Parser parser = new Parser();
+        Message message = parser.parse(":test!test@host :alice!alice@host PRIVMSG TEST\r\n");
 
         List<String> expected = new ArrayList<>();
         expected.add("PRIVMSG");
@@ -120,14 +120,14 @@ public class ParserTest {
     @Test
     public void parseErrorCreatesNumerics(){
         String input = "1";
-        Scanner scanner = new Scanner();
-        Message message = scanner.parse(input.repeat(600) + "\r\n");
+        Parser parser = new Parser();
+        Message message = parser.parse(input.repeat(600) + "\r\n");
 
         assertEquals(417, message.getNumeric().getCode());
 
         input = "1";
-        scanner = new Scanner();
-        message = scanner.parse(input);
+        parser = new Parser();
+        message = parser.parse(input);
         assertEquals(400, message.getNumeric().getCode());
     }
 }
