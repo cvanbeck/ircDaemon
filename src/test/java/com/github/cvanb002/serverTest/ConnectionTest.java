@@ -8,10 +8,6 @@ import com.github.cvanb002.server.Connection;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,7 +25,7 @@ public class ConnectionTest {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Test
     public void clientReceivesCorrectData() throws IOException {
         try
