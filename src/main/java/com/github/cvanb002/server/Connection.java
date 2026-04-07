@@ -56,7 +56,7 @@ public class Connection implements Runnable {
 
     public synchronized void send(String message){
         try {
-            out.write(message + IRC.Constants.CRLF);
+            out.println(message);
         } catch (Exception e){
             System.out.println("Error sending: " + e.getMessage());
         }
