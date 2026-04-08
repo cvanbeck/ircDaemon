@@ -13,7 +13,10 @@ public class CommandHandler {
     }
 
     public void handle(Message message, Client client){
-        // temp implementation
+            debugSending(message, client);
+        }
+
+    private void debugSending(Message message, Client client){
         client.send("DEBUG: Message recieved" + message.toString());
         client.send(message.getCommand());
         client.send(message.getSource());
@@ -24,28 +27,4 @@ public class CommandHandler {
             client.send(param);
         }
     }
-
-    private IRC.Numeric ping(String source, String token){
-        if(token.isEmpty()){
-            return IRC.Numeric.ERR_NEEDMOREPARAMS;
-        }
-        else if(source.isEmpty()){
-            return IRC.Numeric.ERR_NOORIGIN;
-        }
-
-        return IRC.Numeric.SUCCESS;
-    }
-
-    private void oper(){};
-
-    private void quit(){};
-
-    private void error(){};
-
-    private void join(){};
-
-    private void kick(){};
-
-    private void privmsg(){};
-
 }
