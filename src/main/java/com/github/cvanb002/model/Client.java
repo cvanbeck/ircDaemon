@@ -18,7 +18,6 @@ public class Client{
         connection.send(message);
     }
 
-
     public void setUser(String user){
         this.user = user;
     }
