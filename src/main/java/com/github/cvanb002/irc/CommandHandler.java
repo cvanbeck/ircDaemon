@@ -17,15 +17,14 @@ public class CommandHandler {
     }
 
     public void handle(Message message, Client client){
-            Command command = commands.get(message.getCommand().toUpperCase());
-            if(command != null){
-                command.call(message, client);
-            }
-            else {
-                debugSending(message, client);
-            }
+        Command command = commands.get(message.getCommand().toUpperCase());
+        if(command != null){
+            command.call(message, client);
+        }
+        else {
+            debugSending(message, client);
+        }
     }
-
 
     public void register(IRC.Commands[] commands){
         for(IRC.Commands command: commands){
@@ -33,7 +32,6 @@ public class CommandHandler {
             this.commands.put(command.name(), commandClass);
         }
     }
-
 
     private void debugSending(Message message, Client client){
         client.send("DEBUG Message recieved: " + message.toString());

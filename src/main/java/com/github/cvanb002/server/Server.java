@@ -11,11 +11,10 @@ import static java.lang.System.exit;
 
 
 public class Server {
-    int port;
-    State state;
-    Parser parser;
-    CommandHandler handler;
-
+    private final int port;
+    private final State state;
+    private final Parser parser;
+    private final CommandHandler handler;
 
     public Server(int port, State state, Parser parser, CommandHandler handler){
         this.port = port;
@@ -24,28 +23,24 @@ public class Server {
         this.handler = handler;
     }
 
-
     public void run() throws IOException {
-        // First trys to create the socket on server side
-        try(
-                ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName(null))
-        ){
-            System.out.print("Server started");
+        // First tries to create the socket on server side
+        try(ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName(null))){
+
+            System.out.println("Server started");
 
             while(true){
                 // Then listens to incoming connections on this socket. Creating a new client when connection is made
                 Client client = new Client();
                 Connection connection = new Connection(serverSocket.accept(), parser, handler, client);
-                client.addConnection(connection);
                 state.addClient(client);
+                client.addConnection(connection);
 
                 new Thread(connection).start();
                 System.out.println("User Connected");
             }
         } catch (IOException e) {
             e.printStackTrace(System.out);
-        } finally {
-            exit(1);
         }
     }
 
