@@ -48,7 +48,7 @@ public class Parser {
                         break;
                     case "EXTPARAMETER":
                         // If an extended parameter is found we just take the rest of the message as a single param
-                        token = createToken(input, startIndex);
+                        token = createToken(input, startIndex+2);
                         message.addParameter(token);
                         return message;
                     case"PARAMETER":

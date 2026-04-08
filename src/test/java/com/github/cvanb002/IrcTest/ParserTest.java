@@ -55,7 +55,7 @@ public class ParserTest {
         Message message = parser.parse("CAP :sasl message-tags foo\r\n");
 
         List<String> expected = new ArrayList<>();
-        expected.add(":sasl message-tags foo");
+        expected.add("sasl message-tags foo");
 
         assertEquals("CAP", message.getCommand());
         assertEquals(expected, message.getParameters());
@@ -69,7 +69,7 @@ public class ParserTest {
         List<String> expected = new ArrayList<>();
         expected.add("REQ");
         expected.add("ANOTHER");
-        expected.add(":sasl message-tags foo");
+        expected.add("sasl message-tags foo");
 
         assertEquals("CAP", message.getCommand());
         assertEquals(expected, message.getParameters());
@@ -95,7 +95,7 @@ public class ParserTest {
 
         List<String> expected = new ArrayList<>();
         expected.add("#chatroom");
-        expected.add(":Hello! How are you");
+        expected.add("Hello! How are you");
 
         assertEquals("alice!alice@host", message.getSource());
         assertEquals("PRIVMSG", message.getCommand());
