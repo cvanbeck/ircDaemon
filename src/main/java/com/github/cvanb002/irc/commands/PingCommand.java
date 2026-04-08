@@ -14,6 +14,15 @@ public class PingCommand extends Command {
 
     @Override
     public void call(Message message, Client client) {
-        client.send("PONG");
+        Message response = new Message();
+        response.addCommand("PONG");
+        
+        if(!message.getParameters().isEmpty()){
+            for(String param : message.getParameters()){
+                response.addParameter(param);
+                System.out.println(param);
+            }
+        }
+        client.send(response.toString());
     }
 }
