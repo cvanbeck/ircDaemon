@@ -61,13 +61,9 @@ public class Connection implements Runnable {
 
     public synchronized void send(String message){
         try {
-<<<<<<< HEAD
-            out.println(message);
-=======
             System.out.println(">> " + message);
             out.write(message + IRC.Constants.CRLF);
             out.flush();
->>>>>>> b3369df9ce232e646e55d1d6225c6df724d08d51
         } catch (Exception e){
             System.out.println("Error sending: " + e.getMessage());
         }
