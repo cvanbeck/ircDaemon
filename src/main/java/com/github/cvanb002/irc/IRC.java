@@ -1,5 +1,9 @@
 package com.github.cvanb002.irc;
 
+import com.github.cvanb002.irc.commands.PingCommand;
+import com.github.cvanb002.model.Command;
+import com.github.cvanb002.model.State;
+
 public class IRC {
     public static class Constants {
         public static int MAXLENGTH = 512;
@@ -53,14 +57,30 @@ public class IRC {
     }
 
     public enum Commands {
-        PRIVMSG,
-        USER,
-        PING,
-        OPER,
-        QUIT,
-        ERROR,
-        JOIN,
-        KICK
+        // PING command as temp so it compiles
+        PRIVMSG(PingCommand.class),
+        USER(PingCommand.class),
+        PING(PingCommand.class),
+        OPER(PingCommand.class),
+        QUIT(PingCommand.class),
+        ERROR(PingCommand.class),
+        JOIN(PingCommand.class),
+        KICK(PingCommand.class);
+
+        final Class<?> commandClass;
+
+        Commands(Class<?> commandClass) {
+            this.commandClass = commandClass;
+        }
+
+        public Command create(State state){
+            if (commandClass.equals(PingCommand.class)){
+                return new PingCommand(state);
+            }
+            return null;
+        }
+        
+
     }
 
 
