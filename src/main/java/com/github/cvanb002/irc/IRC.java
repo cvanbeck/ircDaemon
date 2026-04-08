@@ -56,7 +56,6 @@ public class IRC {
         PRIVMSG,
         USER,
         PING,
-        PONG,
         OPER,
         QUIT,
         ERROR,
