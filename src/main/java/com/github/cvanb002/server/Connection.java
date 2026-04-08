@@ -68,7 +68,6 @@ public class Connection implements Runnable {
             System.out.println("Error sending: " + e.getMessage());
         }
     }
-
     private void close() {
         try {
             in.close();
