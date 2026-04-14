@@ -9,7 +9,7 @@ public class Message {
     private String source = "";
     private String command = "";
     private IRC.Numeric numeric;
-    private final List<String> parameters = new ArrayList<String>();
+    private final ArrayList<String> parameters = new ArrayList<>();
 
     public Message(){}
 
@@ -41,7 +41,7 @@ public class Message {
         return source;
     }
 
-    public List<String> getParameters() {
+    public ArrayList<String> getParameters() {
         return parameters;
     }
 
