@@ -22,4 +22,15 @@ public class State {
             System.err.print("Failed to remove reference to client.");
         }
     }
+
+    public boolean nickExists(String nick){
+        String clientNick;
+        for(Client client : clients){
+            clientNick = client.getNick();
+            if(nick.equals(clientNick)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
