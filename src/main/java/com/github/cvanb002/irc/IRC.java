@@ -2,6 +2,7 @@ package com.github.cvanb002.irc;
 
 import com.github.cvanb002.irc.handlers.NickHandler;
 import com.github.cvanb002.irc.handlers.PingHandler;
+import com.github.cvanb002.irc.handlers.QuitHandler;
 import com.github.cvanb002.irc.handlers.UserHandler;
 import com.github.cvanb002.model.Handler;
 import com.github.cvanb002.model.State;
@@ -61,12 +62,12 @@ public class IRC {
 
     public enum Commands {
         // PING command as temp so it compiles
-        PRIVMSG(PingHandler.class),
+        PING(PingHandler.class),
         NICK(NickHandler.class),
         USER(UserHandler.class),
-        PING(PingHandler.class),
+        QUIT(QuitHandler.class),
+        PRIVMSG(PingHandler.class),
         OPER(PingHandler.class),
-        QUIT(PingHandler.class),
         ERROR(PingHandler.class),
         JOIN(PingHandler.class),
         KICK(PingHandler.class);
@@ -84,6 +85,8 @@ public class IRC {
                 return new NickHandler(state);
             } else if (commandClass.equals(UserHandler.class)) {
                 return new UserHandler(state);
+            } else if(commandClass.equals(QuitHandler.class)){
+                return new QuitHandler(state);
             }
             return null;
         }
