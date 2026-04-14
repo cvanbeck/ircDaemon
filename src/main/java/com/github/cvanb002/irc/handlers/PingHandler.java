@@ -1,14 +1,14 @@
-package com.github.cvanb002.irc.commands;
+package com.github.cvanb002.irc.handlers;
 
 import com.github.cvanb002.model.Client;
 import com.github.cvanb002.model.Command;
 import com.github.cvanb002.model.Message;
 import com.github.cvanb002.model.State;
 
-public class PingCommand extends Command {
+public class PingHandler extends Command {
     State state;
 
-    public PingCommand(State state){
+    public PingHandler(State state){
         super(state);
     }
 
