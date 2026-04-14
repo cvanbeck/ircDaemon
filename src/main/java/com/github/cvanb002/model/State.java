@@ -5,8 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class State {
+    String source;
     List<Client> clients = Collections.synchronizedList(new ArrayList<>());
 
+    public State(String source){
+        this.source = source;
+    }
 
     public List<Client> getClients(){
         return clients;
@@ -21,6 +25,10 @@ public class State {
         } catch (Exception e) {
             System.err.print("Failed to remove reference to client.");
         }
+    }
+
+    public String getSource() {
+        return source;
     }
 
     public boolean nickExists(String nick){
