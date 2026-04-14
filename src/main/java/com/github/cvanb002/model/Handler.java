@@ -1,11 +1,8 @@
 package com.github.cvanb002.model;
 
-public abstract class Command {
+public abstract class Handler {
     State state;
 
-    public Command(State state){
-        this.state = state;
-    }
 
     public abstract void call(Message message, Client client);
 }

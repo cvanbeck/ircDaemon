@@ -5,11 +5,21 @@ import com.github.cvanb002.server.Connection;
 
 public class Client{
     private Connection connection;
+
     private String user;
     private String nick;
+    private String realName;
+
+    boolean hasNick = false;
+    boolean hasUser = false;
+    boolean isRegistered = false;
 
     public void addConnection(Connection connection){
         this.connection = connection;
+    }
+
+    public void closeConnection(){
+        connection.close();
     }
 
     public void send(String message){
@@ -31,6 +41,40 @@ public class Client{
     public String getNick(){
         return nick;
     }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setHasNick(boolean hasNick) {
+        this.hasNick = hasNick;
+    }
+
+    public void setHasUser(boolean hasUser) {
+        this.hasUser = hasUser;
+    }
+
+    private void setRegistered(boolean registered) {
+        isRegistered = registered;
+    }
+
+    public boolean isRegistered() {
+        return isRegistered;
+    }
+
+    public boolean attemptRegistration(){
+        if(hasNick && hasUser && !isRegistered){
+            setRegistered(true);
+            return true;
+        }
+        return false;
+    }
+
+
 };
 
 

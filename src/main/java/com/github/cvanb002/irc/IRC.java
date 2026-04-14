@@ -1,7 +1,7 @@
 package com.github.cvanb002.irc;
 
-import com.github.cvanb002.irc.commands.PingCommand;
-import com.github.cvanb002.model.Command;
+import com.github.cvanb002.irc.handlers.*;
+import com.github.cvanb002.model.Handler;
 import com.github.cvanb002.model.State;
 
 public class IRC {
@@ -59,14 +59,15 @@ public class IRC {
 
     public enum Commands {
         // PING command as temp so it compiles
-        PRIVMSG(PingCommand.class),
-        USER(PingCommand.class),
-        PING(PingCommand.class),
-        OPER(PingCommand.class),
-        QUIT(PingCommand.class),
-        ERROR(PingCommand.class),
-        JOIN(PingCommand.class),
-        KICK(PingCommand.class);
+        PING(PingHandler.class),
+        NICK(NickHandler.class),
+        USER(UserHandler.class),
+        QUIT(QuitHandler.class),
+        PRIVMSG(PrivMsgHandler.class),
+        OPER(PingHandler.class),
+        ERROR(PingHandler.class),
+        JOIN(PingHandler.class),
+        KICK(PingHandler.class);
 
         final Class<?> commandClass;
 
@@ -74,9 +75,17 @@ public class IRC {
             this.commandClass = commandClass;
         }
 
-        public Command create(State state){
-            if (commandClass.equals(PingCommand.class)){
-                return new PingCommand(state);
+        public Handler create(State state){
+            if (commandClass.equals(PingHandler.class)){
+                return new PingHandler(state);
+            } else if (commandClass.equals(NickHandler.class)) {
+                return new NickHandler(state);
+            } else if (commandClass.equals(UserHandler.class)) {
+                return new UserHandler(state);
+            } else if(commandClass.equals(QuitHandler.class)){
+                return new QuitHandler(state);
+            } else if(commandClass.equals(PrivMsgHandler.class)){
+                return new PrivMsgHandler(state);
             }
             return null;
         }

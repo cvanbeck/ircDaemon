@@ -68,7 +68,7 @@ public class Connection implements Runnable {
             System.out.println("Error sending: " + e.getMessage());
         }
     }
-    private void close() {
+    public void close() {
         try {
             in.close();
             out.close();
@@ -92,7 +92,8 @@ public class Connection implements Runnable {
     }
 
     private void logInput(String input) {
-        System.out.println(client.getNick() + ": " + input);
+
+        System.out.print(client.getNick() + ": " + input);
     }
 
     private void logOutput(String output) {

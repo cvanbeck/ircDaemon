@@ -44,7 +44,7 @@ public class ConnectionTest {
 
     private Connection createMockConnection(StringWriter stringWriter){
         BufferedWriter out = new BufferedWriter(stringWriter);
-        State state = new State();
+        State state = new State("localhost");
         Client client = new Client();
         return new Connection(out, new BufferedReader(new StringReader("")), new Parser(), new CommandHandler(state), client);
 

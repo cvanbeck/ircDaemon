@@ -1,15 +1,15 @@
-package com.github.cvanb002.irc.commands;
+package com.github.cvanb002.irc.handlers;
 
 import com.github.cvanb002.model.Client;
-import com.github.cvanb002.model.Command;
+import com.github.cvanb002.model.Handler;
 import com.github.cvanb002.model.Message;
 import com.github.cvanb002.model.State;
 
-public class PingCommand extends Command {
+public class PingHandler extends Handler {
     State state;
 
-    public PingCommand(State state){
-        super(state);
+    public PingHandler(State state){
+
     }
 
     @Override
@@ -20,7 +20,6 @@ public class PingCommand extends Command {
         if(!message.getParameters().isEmpty()){
             for(String param : message.getParameters()){
                 response.addParameter(param);
-                System.out.println(param);
             }
         }
         client.send(response.toString());
