@@ -92,7 +92,8 @@ public class Connection implements Runnable {
     }
 
     private void logInput(String input) {
-        System.out.println(client.getNick() + ": " + input);
+
+        System.out.print(client.getNick() + ": " + input);
     }
 
     private void logOutput(String output) {

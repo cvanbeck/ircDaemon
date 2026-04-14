@@ -21,9 +21,10 @@ public class CommandHandler {
         if(command != null){
             command.call(message, client);
         }
-        else {
-            debugSending(message, client);
-        }
+        // Debugging
+        // else {
+        //    debugSending(message, client);
+        // }
     }
 
     public void register(IRC.Commands[] commands){
@@ -40,5 +41,6 @@ public class CommandHandler {
         for(String param : message.getParameters()){
             client.send("PARAM: " + param);
         }
+        System.out.print("\n");
     }
 }
