@@ -1,7 +1,7 @@
 package com.github.cvanb002.irc;
 
 
-import com.github.cvanb002.model.Command;
+import com.github.cvanb002.model.Handler;
 import com.github.cvanb002.model.Message;
 import com.github.cvanb002.model.Client;
 import com.github.cvanb002.model.State;
@@ -10,16 +10,28 @@ import java.util.HashMap;
 
 public class CommandHandler {
     private final State state;
-    private final HashMap<String, Command> commands = new HashMap<>();
+    private final HashMap<String, Handler> commands = new HashMap<>();
 
     public CommandHandler(State state){
         this.state = state;
     }
 
     public void handle(Message message, Client client){
-        Command command = commands.get(message.getCommand().toUpperCase());
-        if(command != null){
-            command.call(message, client);
+        String command = message.getCommand().toUpperCase();
+        Handler handler = commands.get(command);
+
+        if(!client.isRegistered()){
+            if(!command.equals("NICK") && !command.equals("USER")){
+                Message response = new Message();
+                response.addSource(":" + state.getSource());
+                response.addCommand("451");
+                response.addParameter(client.getNick());
+                response.addParameter(":You have not registered");
+            }
+        }
+
+        if(handler != null){
+            handler.call(message, client);
         }
         // Debugging
         // else {
@@ -29,8 +41,8 @@ public class CommandHandler {
 
     public void register(IRC.Commands[] commands){
         for(IRC.Commands command: commands){
-            Command commandClass = command.create(state);
-            this.commands.put(command.name(), commandClass);
+            Handler handlerClass = command.create(state);
+            this.commands.put(command.name(), handlerClass);
         }
     }
 
