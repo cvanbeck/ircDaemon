@@ -18,6 +18,10 @@ public class Client{
         this.connection = connection;
     }
 
+    public void closeConnection(){
+        connection.close();
+    }
+
     public void send(String message){
         connection.send(message);
     }
