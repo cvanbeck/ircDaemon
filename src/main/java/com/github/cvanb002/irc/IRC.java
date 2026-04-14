@@ -3,7 +3,7 @@ package com.github.cvanb002.irc;
 import com.github.cvanb002.irc.handlers.NickHandler;
 import com.github.cvanb002.irc.handlers.PingHandler;
 import com.github.cvanb002.irc.handlers.UserHandler;
-import com.github.cvanb002.model.Command;
+import com.github.cvanb002.model.Handler;
 import com.github.cvanb002.model.State;
 
 public class IRC {
@@ -77,7 +77,7 @@ public class IRC {
             this.commandClass = commandClass;
         }
 
-        public Command create(State state){
+        public Handler create(State state){
             if (commandClass.equals(PingHandler.class)){
                 return new PingHandler(state);
             } else if (commandClass.equals(NickHandler.class)) {

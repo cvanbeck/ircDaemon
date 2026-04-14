@@ -1,6 +1,6 @@
 package com.github.cvanb002.model;
 
-public abstract class Command {
+public abstract class Handler {
     State state;
 
 

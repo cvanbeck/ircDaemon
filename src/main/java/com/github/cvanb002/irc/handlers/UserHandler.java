@@ -1,11 +1,11 @@
 package com.github.cvanb002.irc.handlers;
 
 import com.github.cvanb002.model.Client;
-import com.github.cvanb002.model.Command;
+import com.github.cvanb002.model.Handler;
 import com.github.cvanb002.model.Message;
 import com.github.cvanb002.model.State;
 
-public class UserHandler extends Command {
+public class UserHandler extends Handler {
     State state;
 
     public UserHandler(State state){
