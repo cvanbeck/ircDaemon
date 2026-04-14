@@ -21,12 +21,13 @@ public class CommandHandler {
         Handler handler = commands.get(command);
 
         if(!client.isRegistered()){
-            if(!command.equals("NICK") && !command.equals("USER")){
+            if(!command.equals("NICK") && !command.equals("USER") && !command.equals("PING")){
                 Message response = new Message();
                 response.addSource(":" + state.getSource());
                 response.addCommand("451");
                 response.addParameter(client.getNick());
                 response.addParameter(":You have not registered");
+                client.send(response.toString());
             }
         }
 
