@@ -42,4 +42,13 @@ public class State {
         }
         return false;
     }
+
+    public Client findClient(String nick){
+        for(Client client : clients) {
+            if(nick.equals(client.getNick())){
+                return client;
+            }
+        } return null;
+    }
+
 }
