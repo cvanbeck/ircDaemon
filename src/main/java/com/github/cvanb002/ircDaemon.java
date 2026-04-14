@@ -13,7 +13,7 @@ public class ircDaemon {
     public static void main(String[] args){
         int port = 6665;
 
-        State state = new State();
+        State state = new State("127.0.0.1");
         Parser parser = new Parser();
         CommandHandler commandHandler = new CommandHandler(state);
         commandHandler.register(IRC.Commands.values());
