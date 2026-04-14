@@ -45,6 +45,10 @@ public class Message {
         return parameters;
     }
 
+    public String getParameters(int index) {
+        return getParameters().get(index);
+    }
+
     public IRC.Numeric getNumeric(){
         return numeric;
     }
