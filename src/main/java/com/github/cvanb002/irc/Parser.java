@@ -64,6 +64,7 @@ public class Parser {
     }
 
     private boolean endOfLine(String input) {
+        String inputt = input;
         return input.substring(currentIndex).equals("\r\n");
     }
 
@@ -82,15 +83,19 @@ public class Parser {
 
 
     private String categoriseToken(String token, Message message){
+        if(token.isEmpty()){
+            return "";
+        }
         if(token.charAt(0) == ':' && startIndex == 0){
             return IRC.Type.SOURCE.toString();
         }
-        else if(message.getCommand().isEmpty()){
+        else if(message.getCommand().isEmpty()){    
             return IRC.Type.COMMAND.toString();
         }
         else if ((token.charAt(0) == ':')){
             return IRC.Type.EXTPARAMETER.toString();
-        } else {
+        }
+        else {
             return IRC.Type.PARAMETER.toString();
         }
     }
