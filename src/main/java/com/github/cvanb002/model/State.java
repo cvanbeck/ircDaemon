@@ -22,6 +22,7 @@ public class State {
     public void removeClient(Client client) {
         try {
             clients.remove(client);
+            client.closeConnection();
         } catch (Exception e) {
             System.err.print("Failed to remove reference to client.");
         }
