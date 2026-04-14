@@ -1,5 +1,6 @@
 package com.github.cvanb002.irc;
 
+import com.github.cvanb002.irc.handlers.NickHandler;
 import com.github.cvanb002.irc.handlers.PingHandler;
 import com.github.cvanb002.model.Command;
 import com.github.cvanb002.model.State;
@@ -60,6 +61,7 @@ public class IRC {
     public enum Commands {
         // PING command as temp so it compiles
         PRIVMSG(PingHandler.class),
+        NICK(NickHandler.class),
         USER(PingHandler.class),
         PING(PingHandler.class),
         OPER(PingHandler.class),
@@ -77,6 +79,8 @@ public class IRC {
         public Command create(State state){
             if (commandClass.equals(PingHandler.class)){
                 return new PingHandler(state);
+            } else if (commandClass.equals(NickHandler.class)) {
+                return new NickHandler(state);
             }
             return null;
         }

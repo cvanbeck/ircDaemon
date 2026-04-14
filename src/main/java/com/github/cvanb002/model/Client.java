@@ -45,9 +45,19 @@ public class Client{
         this.hasUser = hasUser;
     }
 
-    public void setRegistered(boolean registered) {
+    private void setRegistered(boolean registered) {
         isRegistered = registered;
     }
+
+    public boolean attemptRegistration(){
+        if(hasNick && hasUser && !isRegistered){
+            setRegistered(true);
+            return true;
+        }
+        return false;
+    }
+
+
 };
 
 
