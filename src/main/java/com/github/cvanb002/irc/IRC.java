@@ -1,9 +1,6 @@
 package com.github.cvanb002.irc;
 
-import com.github.cvanb002.irc.handlers.NickHandler;
-import com.github.cvanb002.irc.handlers.PingHandler;
-import com.github.cvanb002.irc.handlers.QuitHandler;
-import com.github.cvanb002.irc.handlers.UserHandler;
+import com.github.cvanb002.irc.handlers.*;
 import com.github.cvanb002.model.Handler;
 import com.github.cvanb002.model.State;
 
@@ -66,7 +63,7 @@ public class IRC {
         NICK(NickHandler.class),
         USER(UserHandler.class),
         QUIT(QuitHandler.class),
-        PRIVMSG(PingHandler.class),
+        PRIVMSG(PrivMsgHandler.class),
         OPER(PingHandler.class),
         ERROR(PingHandler.class),
         JOIN(PingHandler.class),
@@ -87,6 +84,8 @@ public class IRC {
                 return new UserHandler(state);
             } else if(commandClass.equals(QuitHandler.class)){
                 return new QuitHandler(state);
+            } else if(commandClass.equals(PrivMsgHandler.class)){
+                return new PrivMsgHandler(state);
             }
             return null;
         }
