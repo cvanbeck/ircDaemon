@@ -21,6 +21,9 @@ public class CommandHandler {
         Handler handler = commands.get(command);
 
         if(!client.isRegistered()){
+            if(command.equals("CAP")){
+                return;
+            }
             if(!command.equals("NICK") && !command.equals("USER") && !command.equals("PING")){
                 Message response = new Message();
                 response.addSource(":" + state.getSource());
