@@ -2,6 +2,7 @@ package com.github.cvanb002.irc;
 
 import com.github.cvanb002.irc.handlers.NickHandler;
 import com.github.cvanb002.irc.handlers.PingHandler;
+import com.github.cvanb002.irc.handlers.UserHandler;
 import com.github.cvanb002.model.Command;
 import com.github.cvanb002.model.State;
 
@@ -62,7 +63,7 @@ public class IRC {
         // PING command as temp so it compiles
         PRIVMSG(PingHandler.class),
         NICK(NickHandler.class),
-        USER(PingHandler.class),
+        USER(UserHandler.class),
         PING(PingHandler.class),
         OPER(PingHandler.class),
         QUIT(PingHandler.class),
@@ -81,6 +82,8 @@ public class IRC {
                 return new PingHandler(state);
             } else if (commandClass.equals(NickHandler.class)) {
                 return new NickHandler(state);
+            } else if (commandClass.equals(UserHandler.class)) {
+                return new UserHandler(state);
             }
             return null;
         }
