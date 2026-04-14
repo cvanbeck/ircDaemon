@@ -14,6 +14,6 @@ public class QuitHandler extends Handler {
 
     @Override
     public void call(Message message, Client client){
-
+        state.removeClient(client);
     }
 }
