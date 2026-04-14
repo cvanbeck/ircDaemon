@@ -89,6 +89,14 @@ public class ParserTest {
     }
 
     @Test
+    public void canParseSeperatorBeforeCRLF(){
+        Parser parser = new Parser();
+        Message message = parser.parse("QUIT \r\n");
+
+        assertEquals("QUIT", message.getCommand());
+    }
+
+    @Test
     public void tokeniseSourceAndExtParameter(){
         Parser parser = new Parser();
         Message message = parser.parse(":alice!alice@host PRIVMSG #chatroom :Hello! How are you\r\n");
