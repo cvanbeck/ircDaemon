@@ -8,6 +8,7 @@ public class Client{
 
     private String user;
     private String nick;
+    private String realName;
 
     boolean hasNick = false;
     boolean hasUser = false;
@@ -37,6 +38,14 @@ public class Client{
         return nick;
     }
 
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
     public void setHasNick(boolean hasNick) {
         this.hasNick = hasNick;
     }
@@ -47,6 +56,10 @@ public class Client{
 
     private void setRegistered(boolean registered) {
         isRegistered = registered;
+    }
+
+    public boolean isRegistered() {
+        return isRegistered;
     }
 
     public boolean attemptRegistration(){
