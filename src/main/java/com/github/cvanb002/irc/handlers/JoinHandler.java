@@ -1,12 +1,9 @@
 package com.github.cvanb002.irc.handlers;
 
-import com.github.cvanb002.model.Client;
-import com.github.cvanb002.model.Handler;
-import com.github.cvanb002.model.Message;
-import com.github.cvanb002.model.State;
+import com.github.cvanb002.model.*;
 
 public class JoinHandler extends Handler {
-    State state;
+    private State state;
 
     public JoinHandler(State state){
         this.state = state;
@@ -14,6 +11,23 @@ public class JoinHandler extends Handler {
 
     @Override
     public void call(Message message, Client client) {
-        
+        String channelName = message.getParameters(0);
+        Channel channel;
+
+        if (state.channelExists(channelName)) {
+            channel = new Channel(channelName);
+            channel.addUser(client);
+            channel.addOperator(client);
+            state.addChannel(channel);
+        } else {
+            channel = state.getChannel(channelName);
+            channel.addUser(client);
+        }
+
+        channel.send(":" + client.getNick() + " JOIN " + channel.getName());
+        client.send(":" + state.getSource() + " 332 " + ":" + channel.getTopic());
+        client.send(":" + state.getSource() + " = 353 " + channel.getName() + ":" + channel.usersToString());
+        client.send(":" + state.getSource() + " 353 " + channel.getName() + ": End of /NAMES list");
     }
+
 }
