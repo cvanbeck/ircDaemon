@@ -24,10 +24,10 @@ public class JoinHandler extends Handler {
             channel.addUser(client);
         }
 
-        channel.send(":" + client.getNick() + " JOIN " + channel.getName());
-        client.send(":" + state.getSource() + " 332 " + ":" + channel.getTopic());
-        client.send(":" + state.getSource() + " = 353 " + channel.getName() + ":" + channel.usersToString());
-        client.send(":" + state.getSource() + " 353 " + channel.getName() + ": End of /NAMES list");
+        channel.broadcast(":" + client.getNick() + " JOIN " + channel.getName());
+        client.send(":" + state.getSource() + " 332 " + client.getNick() + " " + channel.getName() + " :" + channel.getTopic());
+        client.send(":" + state.getSource() + " 353 " + client.getNick() + " = "  + channel.getName() + " :" + channel.usersToString());
+        client.send(":" + state.getSource() + " 366 " + client.getNick() + " " + channel.getName() + " :End of /NAMES list");
     }
 
 }
