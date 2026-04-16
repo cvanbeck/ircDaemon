@@ -1,21 +1,32 @@
 package com.github.cvanb002.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class State {
     String source;
     List<Client> clients = Collections.synchronizedList(new ArrayList<>());
-    List<Channel> channels = Collections.synchronizedList(new ArrayList<>());
+    Map<String, Channel> channels = Collections.synchronizedMap(new HashMap<>());
 
     public State(String source){
         this.source = source;
     }
 
-    public List<Client> getClients(){
-        return clients;
+    public String getSource() {
+        return source;
     }
+
+    public List<Client> getClient(){
+        return clients;
+
+    }
+    public Client getClient(String nick){
+        for(Client client : clients) {
+            if(nick.equals(client.getNick())){
+                return client;
+            }
+        } return null;
+    }
+
     public void addClient(Client client){
         clients.add(client);
     }
@@ -29,10 +40,6 @@ public class State {
         }
     }
 
-    public String getSource() {
-        return source;
-    }
-
     public boolean nickExists(String nick){
         String clientNick;
         for(Client client : clients){
@@ -44,12 +51,21 @@ public class State {
         return false;
     }
 
-    public Client findClient(String nick){
-        for(Client client : clients) {
-            if(nick.equals(client.getNick())){
-                return client;
-            }
-        } return null;
+    public void addChannel(Channel channel){
+        channels.put(channel.name, channel);
     }
+
+    public Map<String, Channel> getChannel() {
+        return channels;
+    }
+
+    public Channel getChannel(String name){
+        return  channels.get(name);
+    }
+
+    public boolean channelExists(String name){
+        return channels.containsKey(name);
+    }
+
 
 }
