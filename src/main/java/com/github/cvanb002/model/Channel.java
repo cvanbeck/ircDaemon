@@ -30,6 +30,10 @@ public class Channel {
         users.add(client);
     }
 
+    public List<Client> getUsers() {
+        return users;
+    }
+
     public void removeUser(Client client){
         users.remove(client);
         operators.remove(client);
@@ -43,5 +47,20 @@ public class Channel {
         for(Client user: users){
             user.send(message);
         }
+    }
+
+    public String usersToString(){
+        StringBuilder usersString = new StringBuilder();
+        StringBuilder name = new StringBuilder();
+        for(Client user: users){
+            name.setLength(0);
+            name.append(user.getNick());
+            if(operators.containsKey(name.toString())) {
+                name.insert(0, "@");
+            }
+            usersString.append(" ");
+            usersString.append(name);
+        }
+        return usersString.toString();
     }
 }
