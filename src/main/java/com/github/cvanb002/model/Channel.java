@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class Channel {
-    String name;
-    String topic;
+    private String name;
+    private String topic;
     List<Client> users = Collections.synchronizedList(new ArrayList<>());
 
     public Channel(String name) {
