@@ -15,6 +15,10 @@ public class State {
         return source;
     }
 
+    public void setSource(String source) {
+        this.source = source;
+    }
+
     public List<Client> getClient(){
         return clients;
 

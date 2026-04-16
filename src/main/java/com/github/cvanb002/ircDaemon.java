@@ -11,7 +11,12 @@ import java.io.IOException;
 
 public class ircDaemon {
     public static void main(String[] args){
-        int port = 6665;
+        int port;
+        if(args.length == 1){
+            port = Integer.parseInt(args[0]);
+        } else {
+            port = 6665;
+        }
 
         State state = new State("127.0.0.1");
         Parser parser = new Parser();

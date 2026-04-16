@@ -26,8 +26,9 @@ public class Server {
     public void run() throws IOException {
         // First tries to create the socket on server side
         try(ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName(null))){
+            state.setSource(serverSocket.getInetAddress().getHostAddress());
+            System.out.println("Server started on: " + state.getSource() + ":" + serverSocket.getLocalPort());
 
-            System.out.println("Server started");
 
             while(true){
                 // Then listens to incoming connections on this socket. Creating a new client when connection is made
