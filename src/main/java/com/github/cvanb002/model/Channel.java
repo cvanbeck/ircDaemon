@@ -32,6 +32,7 @@ public class Channel {
 
     public void removeUser(Client client){
         users.remove(client);
+        operators.remove(client);
     }
 
     public void addOperator(Client client){
