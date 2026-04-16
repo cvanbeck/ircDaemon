@@ -19,7 +19,7 @@ public class PrivMsgHandler extends Handler {
         Client destination;
 
         if(state.nickExists(nick)){
-            destination = state.findClient(nick);
+            destination = state.getClient(nick);
             Message response = new Message();
             response.addSource(":" + client.getNick());
             response.addCommand("PRIVMSG");
