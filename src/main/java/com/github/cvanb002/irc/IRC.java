@@ -63,10 +63,10 @@ public class IRC {
         NICK(NickHandler.class),
         USER(UserHandler.class),
         QUIT(QuitHandler.class),
+        JOIN(JoinHandler.class),
         PRIVMSG(PrivMsgHandler.class),
         OPER(PingHandler.class),
         ERROR(PingHandler.class),
-        JOIN(PingHandler.class),
         KICK(PingHandler.class);
 
         final Class<?> commandClass;
@@ -86,6 +86,8 @@ public class IRC {
                 return new QuitHandler(state);
             } else if(commandClass.equals(PrivMsgHandler.class)){
                 return new PrivMsgHandler(state);
+            } else if(commandClass.equals(JoinHandler.class)){
+                return new JoinHandler(state);
             }
             return null;
         }
