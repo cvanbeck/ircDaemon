@@ -52,7 +52,7 @@ public class State {
     }
 
     public void addChannel(Channel channel){
-        channels.put(channel.name, channel);
+        channels.put(channel.getName(), channel);
     }
 
     public Map<String, Channel> getChannel() {
