@@ -11,6 +11,7 @@ public class Channel {
 
     public Channel(String name) {
         this.name = name;
+        this.topic = "Welcome to " + name;
     }
 
     public Channel(String name, String topic) {
@@ -43,8 +44,17 @@ public class Channel {
         operators.put(client.getNick(), client);
     }
 
-    public synchronized void send(String message){
+    public synchronized void broadcast(String message){
         for(Client user: users){
+            user.send(message);
+        }
+    }
+
+    public synchronized void send(String message, Client client){
+        for(Client user: users){
+            if (client.equals(user)){
+                continue;
+            }
             user.send(message);
         }
     }
@@ -58,8 +68,8 @@ public class Channel {
             if(operators.containsKey(name.toString())) {
                 name.insert(0, "@");
             }
-            usersString.append(" ");
             usersString.append(name);
+            usersString.append(" ");
         }
         return usersString.toString();
     }
