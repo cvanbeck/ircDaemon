@@ -7,6 +7,7 @@ import java.util.List;
 public class State {
     String source;
     List<Client> clients = Collections.synchronizedList(new ArrayList<>());
+    List<Channel> channels = Collections.synchronizedList(new ArrayList<>());
 
     public State(String source){
         this.source = source;
