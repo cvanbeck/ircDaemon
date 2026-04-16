@@ -14,7 +14,7 @@ public class JoinHandler extends Handler {
         String channelName = message.getParameters(0);
         Channel channel;
 
-        if (state.channelExists(channelName)) {
+        if (!state.channelExists(channelName)) {
             channel = new Channel(channelName);
             channel.addUser(client);
             channel.addOperator(client);
