@@ -50,9 +50,9 @@ public class Channel {
         }
     }
 
-    public synchronized void send(String message, Client client){
+    public synchronized void send(String message, Client sender){
         for(Client user: users){
-            if (client.equals(user)){
+            if (sender.equals(user)){
                 continue;
             }
             user.send(message);
