@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Channel {
     private String name;
-    private String topic;
+    private String topic = "";
 
     List<Client> users = Collections.synchronizedList(new ArrayList<>());
     Map<String, Client> operators = Collections.synchronizedMap(new HashMap<>());
