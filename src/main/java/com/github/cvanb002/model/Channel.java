@@ -18,6 +18,14 @@ public class Channel {
         this.topic = topic;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
     public void addUser(Client client){
         users.add(client);
     }
