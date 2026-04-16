@@ -1,13 +1,13 @@
 package com.github.cvanb002.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Channel {
     private String name;
     private String topic;
+
     List<Client> users = Collections.synchronizedList(new ArrayList<>());
+    Map<String, Client> operators = Collections.synchronizedMap(new HashMap<>());
 
     public Channel(String name) {
         this.name = name;
@@ -32,6 +32,10 @@ public class Channel {
 
     public void removeUser(Client client){
         users.remove(client);
+    }
+
+    public void addOperator(Client client){
+        operators.put(client.getNick(), client);
     }
 
     public synchronized void send(String message){
