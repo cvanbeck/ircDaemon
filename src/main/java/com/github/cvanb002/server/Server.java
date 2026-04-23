@@ -25,7 +25,7 @@ public class Server {
 
     public void run() throws IOException {
         // First tries to create the socket on server side
-        try(ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName(null))){
+        try(ServerSocket serverSocket = new ServerSocket(port)){
             state.setSource(serverSocket.getInetAddress().getHostAddress());
             System.out.println("Server started on: " + state.getSource() + ":" + serverSocket.getLocalPort());
 
