@@ -2,9 +2,8 @@ package com.github.cvanb002.irc;
 
 import com.github.cvanb002.model.Message;
 
-
+// Class responsible for parsing IRC messages and turning them into Message objects
 public class Parser {
-    // TODO: THis implementation is a mess, defo needs a rework
     int startIndex;
     int currentIndex;
 
@@ -32,9 +31,10 @@ public class Parser {
         startIndex = 0;
         currentIndex = 0;
 
+        //
         while (!finishedScanning(input)) {
             char currentChar = input.charAt(currentIndex);
-
+            // Loops through until the end of a token is found
             if (currentChar == IRC.Constants.SEPERATOR || endOfLine(input)) {
                 token = createToken(input);
                 tokenType = categoriseToken(token, message);

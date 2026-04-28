@@ -2,6 +2,8 @@ package com.github.cvanb002.model;
 
 import java.util.*;
 
+
+// Class used to store references to connected clients and other channel data
 public class Channel {
     private String name;
     private String topic = "";
@@ -44,12 +46,15 @@ public class Channel {
         operators.put(client.getNick(), client);
     }
 
-    public synchronized void broadcast(String message){
+    // Used for sending to all connected clients
+    public synchronized void broadcast(String message)
+    {
         for(Client user: users){
             user.send(message);
         }
     }
 
+    // Similar to broadcast except doesn't send to client who sent message to the channel.
     public synchronized void send(String message, Client sender){
         for(Client user: users){
             if (sender.equals(user)){

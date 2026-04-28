@@ -5,6 +5,9 @@ import com.github.cvanb002.irc.IRC;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+Message is the class responsible for storing the parsed version of incoming messages.
+ */
 public class Message {
     private String source = "";
     private String command = "";

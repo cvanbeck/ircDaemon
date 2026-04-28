@@ -3,6 +3,8 @@ package com.github.cvanb002.model;
 
 import com.github.cvanb002.server.Connection;
 
+// Class responsible for storing all client info, the actual socket connection is initialised separately and must be added
+// to the client after they have both been initialised
 public class Client{
     private Connection connection;
 

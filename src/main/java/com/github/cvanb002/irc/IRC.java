@@ -4,38 +4,17 @@ import com.github.cvanb002.irc.handlers.*;
 import com.github.cvanb002.model.Handler;
 import com.github.cvanb002.model.State;
 
+// Class containing data pertinent to IRC spec
 public class IRC {
     public static class Constants {
         public static int MAXLENGTH = 512;
         public static char SEPERATOR = ' ';
-        public static char EXTENDEDPARAMPREPEND = ':';
-        public static char TAGSPREPEND = '@';
-        public static char SOURCEPREPEND = ':';
         public static String CRLF = "\r\n";
     }
 
     public enum Numeric {
-        SUCCESS(-1), // Not an actual IRC command, use to confirm to server success,
         ERR_INPUT_TOO_LONG(417),
-        ERR_UNKNOWNERROR(400),
-        ERR_NEEDMOREPARAMS(412),
-        ERR_NOORIGIN(409),
-        ERR_NICKNAMEINUSE(433),
-        ERR_ERRONEUSNICKNAME(432),
-        ERR_NONICKNAMEGIVEN(999),
-        ERR_ALREADYREGISTERED(462),
-        ERR_PASSWDMISMATCH(464),
-        ERR_NOOPERHOST(491),
-        RPL_YOUREOPER(381),
-        ERR_NOSUCHCHANNEL(403),
-        ERR_CHANOPRIVISNEEDED(482),
-        ERR_USERNOTINCHANNEL(441),
-        ERR_NOTONCHANNEL(442),
-        ERR_NOSUCHNICK(401),
-        ERR_NOSUCHSERVER(402),
-        ERR_CANNOTSENDTOCHAN(404),
-        ERR_NORECPIENT(411),
-        ERR_NOTEXTTOSEND(412);
+        ERR_UNKNOWNERROR(400);
 
         private final int code;
 
@@ -49,25 +28,22 @@ public class IRC {
     }
 
     public enum Type {
-        TAG,
         SOURCE,
         COMMAND,
         PARAMETER,
         EXTPARAMETER,
-        NULL
+
     }
 
+    // This part of IRC gets updated each time a new command is implemented, new commands must both be added to the enum
+    // and the create factory to ensure that commandHandler can execute them.
     public enum Commands {
-        // PING command as temp so it compiles
         PING(PingHandler.class),
         NICK(NickHandler.class),
         USER(UserHandler.class),
         QUIT(QuitHandler.class),
         JOIN(JoinHandler.class),
-        PRIVMSG(PrivMsgHandler.class),
-        OPER(PingHandler.class),
-        ERROR(PingHandler.class),
-        KICK(PingHandler.class);
+        PRIVMSG(PrivMsgHandler.class);
 
         final Class<?> commandClass;
 
@@ -75,6 +51,7 @@ public class IRC {
             this.commandClass = commandClass;
         }
 
+        // Factory for creating implemented command classes
         public Handler create(State state){
             if (commandClass.equals(PingHandler.class)){
                 return new PingHandler(state);

@@ -2,8 +2,15 @@ package com.github.cvanb002.model;
 
 import java.util.*;
 
+/*
+ A singular instance of state is initialised at server start and is shared between the server and all clients.
+
+ Responsible for both storing all references to client/channels and providing the methods for accessing them
+ */
+
 public class State {
     String source;
+    // Clients and channels both get synchronised due to the fact there are multiple threads
     List<Client> clients = Collections.synchronizedList(new ArrayList<>());
     Map<String, Channel> channels = Collections.synchronizedMap(new HashMap<>());
 

@@ -8,6 +8,12 @@ import com.github.cvanb002.model.State;
 
 import java.util.HashMap;
 
+
+
+// Function responsible for translating incoming commands to the correct Handler subclass, this way the server only
+// needs to know about this one singular class instead of each handler subclass. A singular version of this object gets
+// created at application which registers all commands in IRC.Commands, a reference to this object is then passed to each
+// new connection.
 public class CommandHandler {
     private final State state;
     private final HashMap<String, Handler> commands = new HashMap<>();
@@ -20,7 +26,10 @@ public class CommandHandler {
         String command = message.getCommand().toUpperCase();
         Handler handler = commands.get(command);
 
+        // Until a client is registered they are only able to send NICK, USER, CAP, or PING commands
         if(!client.isRegistered()){
+            // CAP command stands for capability negotiation and does not require implementation, clients still send it
+            // however and needs to be handled gracefully
             if(command.equals("CAP")){
                 return;
             }
@@ -44,6 +53,7 @@ public class CommandHandler {
     }
 
     public void register(IRC.Commands[] commands){
+        // Registers call commands in IRC.Commands
         for(IRC.Commands command: commands){
             Handler handlerClass = command.create(state);
             this.commands.put(command.name(), handlerClass);
